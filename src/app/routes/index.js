@@ -1,5 +1,26 @@
-import login from "./login";
+import ProfilePage from "../pages/profile/ProfilePage";
+import LoginPage from "../pages/login/LoginPage";
+import NotFoundPage from "../pages/notfound/NotFoundPage";
+import { useRoutes } from "react-router-dom";
 
-const routes = [login];
+function RenderRoutes() {
+  let element = useRoutes([
+    {
+      path: "/",
+      element: <ProfilePage />,
+      // children: [
+      //   {
+      //   path: "messages",
+      //   element: <DashboardMessages />,
+      //   },
+      //   { path: "tasks", element: <DashboardTasks /> },
+      // ],
+    },
+    { path: "login", element: <LoginPage /> },
+    { path: "*", element: <NotFoundPage /> },
+  ]);
 
-export default routes;
+  return element;
+}
+
+export default RenderRoutes;
