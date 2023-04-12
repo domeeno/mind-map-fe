@@ -3,20 +3,32 @@ import { useRoutes } from "react-router-dom";
 import ProfilePage from "../pages/profile/ProfilePage";
 import LoginPage from "../pages/login/LoginPage";
 import NotFoundPage from "../pages/notfound/NotFoundPage";
-import Dashboard from "../pages/dashboard/Dashboard";
-import DashboardMap from "../pages/map_dashboard/MapDashboard";
+import DashboardPage from "../pages/dashboard/DashboardPage";
+import DashboardMapPage from "../pages/map_dashboard/MapDashboardPage";
+import ProtectedRoute from "../components/protected/ProtectedRoute";
 
 function RenderRoutes() {
   let element = useRoutes([
-    { path: "/", element: <ProfilePage /> },
+    {
+      path: "/",
+      element: (
+        <ProtectedRoute>
+          <ProfilePage />
+        </ProtectedRoute>
+      ),
+    },
     { path: "/login", element: <LoginPage /> },
     {
       path: "/map",
-      element: <Dashboard />,
+      element: (
+        <ProtectedRoute>
+          <DashboardPage />
+        </ProtectedRoute>
+      ),
       children: [
         {
           path: "/map/:id",
-          element: <DashboardMap />,
+          element: <DashboardMapPage />,
         },
       ],
     },

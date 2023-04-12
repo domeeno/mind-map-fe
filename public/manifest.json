@@ -1,8 +1,7 @@
 {
   "short_name": "Mind Map",
   "name": "Mind Map",
-  "icons": [
-  ],
+  "icons": [],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
