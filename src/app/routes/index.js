@@ -5,26 +5,17 @@ import LoginPage from "../pages/login/LoginPage";
 import NotFoundPage from "../pages/notfound/NotFoundPage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 import DashboardMapPage from "../pages/map_dashboard/MapDashboardPage";
-import ProtectedRoute from "../components/protected/ProtectedRoute";
 
 function RenderRoutes() {
   let element = useRoutes([
-    {
-      path: "/",
-      element: (
-        <ProtectedRoute>
-          <ProfilePage />
-        </ProtectedRoute>
-      ),
-    },
     { path: "/login", element: <LoginPage /> },
     {
+      path: "/",
+      element: <ProfilePage />,
+    },
+    {
       path: "/map",
-      element: (
-        <ProtectedRoute>
-          <DashboardPage />
-        </ProtectedRoute>
-      ),
+      element: <DashboardPage />,
       children: [
         {
           path: "/map/:id",

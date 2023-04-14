@@ -9,7 +9,7 @@ function UnauthorizedPage() {
     setTimeout(() => {
       navigate("/login");
     }, 1000);
-  }, [navigate]);
+  }, []);
 
   return (
     <div className="unauthorized">
