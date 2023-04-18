@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import AuthService from '../../services/AuthService';
 
 const LoginPageLogic = () => {
   const [state, setState] = useState({
