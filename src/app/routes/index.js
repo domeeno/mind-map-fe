@@ -27,6 +27,6 @@ const RenderRoutes = () => {
   ]);
 
   return element;
-}
+};
 
 export default RenderRoutes;

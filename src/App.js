@@ -10,13 +10,11 @@ const App = (props) => {
       {/* <ReactKeycloakProvider authClient={props.keycloak}> */}
       {/* pass it better */}
       <Header keycloak={props.keycloak} />
-      <div className="content">
-        <Router>
-          <Routes>
-            <Route path="*" element={<RenderRoutes />} />
-          </Routes>
-        </Router>
-      </div>
+      <Router>
+        <Routes>
+          <Route path="*" element={<RenderRoutes />} />
+        </Routes>
+      </Router>
       <Footer />
       {/* </ReactKeycloakProvider> */}
     </div>

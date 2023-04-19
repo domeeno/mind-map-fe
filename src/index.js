@@ -13,14 +13,8 @@ let initOptions = {
 let keycloak = new Keycloak(initOptions);
 
 keycloak
-  .init({ onLoad: "login-required" })
+  .init({})
   .then((auth) => {
-    if (!auth) {
-      window.location.reload();
-    } else {
-      console.info("Authenticated");
-    }
-
     //React Render
     const root = ReactDOM.createRoot(document.getElementById("root"));
 
