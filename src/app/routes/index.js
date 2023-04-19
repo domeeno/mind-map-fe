@@ -6,7 +6,7 @@ import NotFoundPage from "../pages/notfound/NotFoundPage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 import DashboardMapPage from "../pages/map_dashboard/MapDashboardPage";
 
-function RenderRoutes() {
+const RenderRoutes = () => {
   let element = useRoutes([
     { path: "/login", element: <LoginPage /> },
     {
