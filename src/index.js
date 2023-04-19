@@ -23,16 +23,17 @@ keycloak
 
     //React Render
     const root = ReactDOM.createRoot(document.getElementById("root"));
+
     root.render(
       <React.StrictMode>
         <App keycloak={keycloak} />
       </React.StrictMode>
     );
 
-    localStorage.setItem("react-token", keycloak.token);
-    localStorage.setItem("react-refresh-token", keycloak.refreshToken);
+    localStorage.setItem("token", keycloak.token);
+    localStorage.setItem("refresh-token", keycloak.refreshToken);
 
-    setTimeout(() => {
+    setInterval(() => {
       keycloak
         .updateToken(70)
         .then((refreshed) => {
