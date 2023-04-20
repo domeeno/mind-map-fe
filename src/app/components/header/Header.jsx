@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styles } from "../../../styles";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useKeycloak } from "../keycloak/KeycloakProvider";
 
 const Header = () => {
   const { keycloak, authenticated } = useKeycloak();
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -15,19 +16,18 @@ const Header = () => {
   return (
     <nav className={`${styles.paddingX} w-full flex items-center py-3 `}>
       <div className="w-full flex justify-between items-center ">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to={authenticated ? "/" : "/welcome"} className="flex items-center gap-2">
           <h1 className="text-white py-2 px-4">.Hortex</h1>
         </Link>
-
         <ul className="list-none hidden sm:flex items-right flex-row gap-10">
           <li
             className={`${
-              window.location.pathname === "/about"
+              location.pathname === "/about"
                 ? "text-white"
                 : "text-secondary"
             } py-2 px-4 hover:text-white font-medium`}
           >
-            <a href="/about">About</a>
+            <Link to="/about">About</Link>
           </li>
           <li>
             {authenticated ? (
