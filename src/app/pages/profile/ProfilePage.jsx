@@ -10,7 +10,7 @@ const ProfilePage = () => {
     if (!authenticated) {
       navigate("/welcome");
     }
-  }, [authenticated]);
+  }, [authenticated, navigate]);
 
   return <div>Profile Page</div>;
 };
