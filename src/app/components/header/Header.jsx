@@ -1,12 +1,19 @@
 import React from "react";
 import { styles } from "../../../styles";
 import { Link } from "react-router-dom";
+import { useKeycloak } from "../keycloak/KeycloakProvider";
 
-const Header = (props) => {
+const Header = () => {
+  const { keycloak, authenticated } = useKeycloak();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    keycloak.logout();
+  };
+
   return (
-    <nav
-      className={`${styles.paddingX} w-full flex items-center py-5 fixed top-0 z-20`}
-    >
+    <nav className={`${styles.paddingX} w-full flex items-center py-3 `}>
       <div className="w-full flex justify-between items-center ">
         <Link to="/" className="flex items-center gap-2">
           <h1 className="text-white py-2 px-4">.Hortex</h1>
@@ -23,17 +30,14 @@ const Header = (props) => {
             <a href="/about">About</a>
           </li>
           <li>
-            {props.keycloak.authenticated ? (
-              <button
-                className="py-2 px-4"
-                onClick={() => props.keycloak.logout()}
-              >
+            {authenticated ? (
+              <button className="py-2 px-4" onClick={() => handleLogout()}>
                 Logout
               </button>
             ) : (
               <button
                 className="text-teal-200 hover:text-indigo-200 py-2 px-4 border border-gray-500 hover:border-transparent rounded"
-                onClick={() => props.keycloak.login()}
+                onClick={() => keycloak.login()}
               >
                 Login
               </button>

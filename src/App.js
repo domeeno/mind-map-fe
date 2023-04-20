@@ -4,12 +4,12 @@ import Footer from "./app/components/footer/Footer";
 import RenderRoutes from "./app/routes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-const App = (props) => {
+const App = () => {
   return (
     <div>
       <Router>
         <div className="relative z-0">
-          <Header keycloak={props.keycloak} />
+          <Header />
           <Routes>
             <Route path="*" element={<RenderRoutes />} />
           </Routes>
