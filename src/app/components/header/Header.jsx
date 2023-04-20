@@ -1,39 +1,55 @@
 import React from "react";
 import { styles } from "../../../styles";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useKeycloak } from "../keycloak/KeycloakProvider";
 
-const Header = (props) => {
+const Header = () => {
+  const { keycloak, authenticated } = useKeycloak();
+  const location = useLocation();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    keycloak.logout();
+  };
+
   return (
-    <nav
-      className={`${styles.paddingX} w-full flex items-center py-5 fixed top-0 z-20`}
-    >
+    <nav className={`${styles.paddingX} w-full flex items-center py-3 `}>
       <div className="w-full flex justify-between items-center ">
-        <Link to="/" className="flex items-center gap-2">
-          <h1 className="text-white py-2 px-4">.Hortex</h1>
+        <Link
+          to={authenticated ? "/" : "/welcome"}
+          className="flex items-center gap-2"
+        >
+          <h1 className="text-2xl text-white py-2 px-4">.Hortex</h1>
         </Link>
-
         <ul className="list-none hidden sm:flex items-right flex-row gap-10">
           <li
             className={`${
-              window.location.pathname === "/about"
-                ? "text-white"
-                : "text-secondary"
+              location.pathname === "/about" ? "text-white" : "text-secondary"
             } py-2 px-4 hover:text-white font-medium`}
           >
-            <a href="/about">About</a>
+            <Link to="/about">About</Link>
+          </li>
+          <li
+            className={`${
+              location.pathname === "/subjects" ? "text-white" : "text-secondary"
+            } py-2 px-4 hover:text-white font-medium`}
+          >
+            <Link to="/subjects">Subjects</Link>
           </li>
           <li>
-            {props.keycloak.authenticated ? (
-              <button
-                className="py-2 px-4"
-                onClick={() => props.keycloak.logout()}
-              >
+            {/* just a vertical grey line div with tailwind css classes */}
+            <div className="w-[2px] h-full bg-[#3A405A]" />
+          </li>
+          <li>
+            {authenticated ? (
+              <button className="py-2 px-4" onClick={() => handleLogout()}>
                 Logout
               </button>
             ) : (
               <button
                 className="text-teal-200 hover:text-indigo-200 py-2 px-4 border border-gray-500 hover:border-transparent rounded"
-                onClick={() => props.keycloak.login()}
+                onClick={() => keycloak.login()}
               >
                 Login
               </button>

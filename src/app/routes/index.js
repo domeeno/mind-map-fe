@@ -3,8 +3,7 @@ import { useRoutes } from "react-router-dom";
 import ProfilePage from "../pages/profile/ProfilePage";
 import WelcomePage from "../pages/welcome/WelcomePage";
 import NotFoundPage from "../pages/notfound/NotFoundPage";
-import DashboardPage from "../pages/dashboard/DashboardPage";
-import DashboardMapPage from "../pages/map_dashboard/MapDashboardPage";
+import SubjectPage from "../pages/subjects/SubjectPage";
 
 const RenderRoutes = () => {
   let element = useRoutes([
@@ -14,12 +13,12 @@ const RenderRoutes = () => {
     },
     { path: "/welcome", element: <WelcomePage /> },
     {
-      path: "/map",
-      element: <DashboardPage />,
+      path: "/subjects",
+      element: <SubjectPage />,
       children: [
         {
-          path: "/map/:id",
-          element: <DashboardMapPage />,
+          path: "/subjects/:id",
+          element: <SubjectPage />,
         },
       ],
     },
