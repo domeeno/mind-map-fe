@@ -1,19 +1,7 @@
 /* flexbox for footer class that sits at the very bottom */
 /* and elements are in one column at the start */
 
-.footer {
-  display: flex;
-  flex-direction: column;
-  padding: 20px 20px 20px;
-  height: 60px;
+.footer-shadow {
   /* box shadow above element */
   box-shadow: 0px -2px 0px 0px rgba(0, 0, 0, 0.1);
-}
-
-/* text similar to h6 */
-
-.footer-text {
-  font-size: 12px;
-  font-weight: 500;
-  color: #9b9b9b;
 }

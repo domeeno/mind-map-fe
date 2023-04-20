@@ -7,17 +7,17 @@ import { KeycloakProvider } from "./app/components/keycloak/KeycloakProvider";
 
 const App = () => {
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <Router>
-        <div className="relative z-0">
-          <KeycloakProvider>
-            <Header />
+        <KeycloakProvider>
+          <Header />
+          <div className="flex-1">
             <Routes>
               <Route path="*" element={<RenderRoutes />} />
             </Routes>
-            <Footer />
-          </KeycloakProvider>
-        </div>
+          </div>
+          <Footer />
+        </KeycloakProvider>
       </Router>
     </div>
   );
