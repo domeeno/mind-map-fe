@@ -4,21 +4,20 @@ import Footer from "./app/components/footer/Footer";
 import RenderRoutes from "./app/routes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-function App(props) {
+const App = (props) => {
   return (
     <div>
-      {/* <ReactKeycloakProvider authClient={props.keycloak}> */}
-      {/* pass it better */}
-      <Header keycloak={props.keycloak} />
       <Router>
-        <Routes>
-          <Route path="*" element={<RenderRoutes />} />
-        </Routes>
+        <div className="relative z-0">
+          <Header keycloak={props.keycloak} />
+          <Routes>
+            <Route path="*" element={<RenderRoutes />} />
+          </Routes>
+          <Footer />
+        </div>
       </Router>
-      <Footer />
-      {/* </ReactKeycloakProvider> */}
     </div>
   );
-}
+};
 
 export default App;

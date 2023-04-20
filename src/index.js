@@ -7,32 +7,27 @@ import Keycloak from "keycloak-js";
 let initOptions = {
   url: "http://localhost:8080",
   realm: "realmap",
-  clientId: "myclient",
+  clientId: "react-frontend",
 };
 
 let keycloak = new Keycloak(initOptions);
 
 keycloak
-  .init({ onLoad: "login-required" })
+  .init({})
   .then((auth) => {
-    if (!auth) {
-      window.location.reload();
-    } else {
-      console.info("Authenticated");
-    }
-
     //React Render
     const root = ReactDOM.createRoot(document.getElementById("root"));
+
     root.render(
       <React.StrictMode>
         <App keycloak={keycloak} />
       </React.StrictMode>
     );
 
-    localStorage.setItem("react-token", keycloak.token);
-    localStorage.setItem("react-refresh-token", keycloak.refreshToken);
+    localStorage.setItem("token", keycloak.token);
+    localStorage.setItem("refresh-token", keycloak.refreshToken);
 
-    setTimeout(() => {
+    setInterval(() => {
       keycloak
         .updateToken(70)
         .then((refreshed) => {

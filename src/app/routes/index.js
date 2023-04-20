@@ -1,18 +1,18 @@
 import { useRoutes } from "react-router-dom";
 
 import ProfilePage from "../pages/profile/ProfilePage";
-import LoginPage from "../pages/login/LoginPage";
+import WelcomePage from "../pages/welcome/WelcomePage";
 import NotFoundPage from "../pages/notfound/NotFoundPage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
 import DashboardMapPage from "../pages/map_dashboard/MapDashboardPage";
 
-function RenderRoutes() {
+const RenderRoutes = () => {
   let element = useRoutes([
-    { path: "/login", element: <LoginPage /> },
     {
       path: "/",
       element: <ProfilePage />,
     },
+    { path: "/welcome", element: <WelcomePage /> },
     {
       path: "/map",
       element: <DashboardPage />,
@@ -27,6 +27,6 @@ function RenderRoutes() {
   ]);
 
   return element;
-}
+};
 
 export default RenderRoutes;
