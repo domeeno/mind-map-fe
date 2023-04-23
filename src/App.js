@@ -4,7 +4,7 @@ import Footer from "./app/components/footer/Footer";
 import RenderRoutes from "./app/routes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { KeycloakProvider } from "./app/components/keycloak/KeycloakProvider";
-import {styles} from "./styles"
+import { styles } from "./styles";
 
 const App = () => {
   return (
@@ -12,7 +12,7 @@ const App = () => {
       <Router>
         <KeycloakProvider>
           <Header />
-          <div className={`${styles.paddingX } flex-1 w-full `}>
+          <div className={`${styles.paddingX} flex-1 w-full `}>
             <Routes>
               <Route path="*" element={<RenderRoutes />} />
             </Routes>

@@ -1,15 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { get } from "../../services/subject-service";
 import { map } from "rxjs/operators";
+import SubjectCard from "../../components/cards/SubjectCard";
 
 const SubjectPage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const subscription = get("test")
+    setData([]);
+    const subscription = get("")
       .pipe(
         map((item) => {
-          console.log(item);
+          return item;
+        })
+      )
+      .subscribe((item) => {
+        setData((data) => [...data, item]);
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const getData = () => {
+    setData([]);
+    const subscription = get("")
+      .pipe(
+        map((item) => {
           return item;
         })
       )
@@ -21,14 +39,40 @@ const SubjectPage = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  };
 
   return (
     <div>
-      <div>Subject Page</div>
-      {data.map((item, index) => (
-        <h1 key={index}>{item}</h1>
-      ))}
+      <div className="flex flex-col justify-between items-center py-10">
+        <h1 class="font-bold text-2xl sm:text-5xl bg-clip-text sm:mb-4 text-[#0077C2]">
+          Subjects
+        </h1>
+        <p class="hidden sm:block px-4 text-gray-400 text-lg text-center">
+          <span className="text-teal-200"> Learn </span>,
+          <span className="text-teal-200"> memorize </span>
+          and
+          <span className="text-teal-200"> practice </span>
+          your understanding of complex subjects, through connections. Develop
+          your information perception and logic links. Build
+          <span className="text-teal-200"> lasting </span>
+          experience, all in one place.
+        </p>
+      </div>
+      <div className="flex flex-col justify-between items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 py-3">
+          {data.map((item) => (
+            <SubjectCard item={item} key={item.id} />
+          ))}
+        </div>
+        {data.length === 6 && (
+          <button
+            className="text-teal-200 hover:text-indigo-200 py-2 px-4 border border-gray-500 hover:border-transparent rounded"
+            onClick={getData}
+          >
+            Refresh...
+          </button>
+        )}
+      </div>
     </div>
   );
 };

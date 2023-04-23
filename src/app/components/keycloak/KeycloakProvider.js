@@ -33,6 +33,9 @@ export const KeycloakProvider = ({ children }) => {
           })
           .catch(() => {
             console.error("Failed to refresh token");
+            setAuthenticated(false);
+            localStorage.removeItem("token");
+            localStorage.removeItem("refresh-token");
           });
       }, 60000);
     }
@@ -40,7 +43,7 @@ export const KeycloakProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const refreshToken = localStorage.getItem("refreshToken");
+    const refreshToken = localStorage.getItem("refresh-token");
 
     if (token && refreshToken) {
       keycloak
@@ -48,11 +51,13 @@ export const KeycloakProvider = ({ children }) => {
         .then((refreshed) => {
           if (refreshed) {
             localStorage.setItem("token", keycloak.token);
-            localStorage.setItem("refreshToken", keycloak.refreshToken);
+            localStorage.setItem("refresh-token", keycloak.refreshToken);
           }
         })
         .catch(() => {
           keycloak.clearToken();
+          localStorage.removeItem("token");
+          localStorage.removeItem("refresh-token");
         });
     }
   }, []);
@@ -61,7 +66,7 @@ export const KeycloakProvider = ({ children }) => {
     keycloak.init({}).then((authenticated) => {
       if (authenticated) {
         localStorage.setItem("token", keycloak.token);
-        localStorage.setItem("refreshToken", keycloak.refreshToken);
+        localStorage.setItem("refresh-token", keycloak.refreshToken);
       }
 
       setAuthenticated(authenticated);

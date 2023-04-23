@@ -5,14 +5,14 @@ const BASE_URL = "http://localhost:8082/api/subject"; // replace with your backe
 function getAuthHeader() {
   const token = localStorage.getItem("token");
   return {
-    Authorization: `${token}`,
+    Authorization: `Bearer ${token}`,
   };
 }
 
 // function that the component will subscribe to to get the data
 export function get(endpoint) {
   return new Observable((observer) => {
-    const source = new EventSource(`${BASE_URL}/${endpoint}`, {
+    const source = new EventSource(`${BASE_URL}`, {
       headers: getAuthHeader(),
     });
     source.onmessage = (event) => {

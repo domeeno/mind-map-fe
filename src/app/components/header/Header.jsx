@@ -32,7 +32,9 @@ const Header = () => {
           </li>
           <li
             className={`${
-              location.pathname === "/subjects" ? "text-white" : "text-secondary"
+              location.pathname === "/subjects"
+                ? "text-white"
+                : "text-secondary"
             } py-2 px-4 hover:text-white font-medium`}
           >
             <Link to="/subjects">Subjects</Link>

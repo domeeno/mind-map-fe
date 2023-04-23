@@ -4,12 +4,17 @@ import ProfilePage from "../pages/profile/ProfilePage";
 import WelcomePage from "../pages/welcome/WelcomePage";
 import NotFoundPage from "../pages/notfound/NotFoundPage";
 import SubjectPage from "../pages/subjects/SubjectPage";
+import AboutPage from "../pages/about/AboutPage";
 
 const RenderRoutes = () => {
   let element = useRoutes([
     {
       path: "/",
       element: <ProfilePage />,
+    },
+    {
+      path: "/about",
+      element: <AboutPage />,
     },
     { path: "/welcome", element: <WelcomePage /> },
     {
