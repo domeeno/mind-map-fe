@@ -3,7 +3,7 @@ import { useRoutes } from "react-router-dom";
 import ProfilePage from "../pages/profile/ProfilePage";
 import WelcomePage from "../pages/welcome/WelcomePage";
 import NotFoundPage from "../pages/notfound/NotFoundPage";
-import SubjectPage from "../pages/subjects/SubjectPage";
+import SubjectsListPage from "../pages/subjects/SubjectsListPage";
 import AboutPage from "../pages/about/AboutPage";
 import SubjectTree from "../pages/subjecttree/SubjectTree";
 
@@ -20,7 +20,7 @@ const RenderRoutes = () => {
     { path: "/welcome", element: <WelcomePage /> },
     {
       path: "/subjects",
-      element: <SubjectPage />,
+      element: <SubjectsListPage />,
       children: [
         {
           path: "/subjects/:id",

@@ -30,3 +30,24 @@ export function get(endpoint) {
     };
   });
 }
+
+export function getSubject(id) {
+  return new Observable((observer) => {
+    const source = new EventSource(`${BASE_URL}/${id}`, {
+      headers: getAuthHeader(),
+    });
+    source.onmessage = (event) => {
+      observer.next(JSON.parse(event.data));
+    };
+    source.onerror = (event) => {
+      if (event.eventPhase === EventSource.CLOSED) {
+        observer.complete();
+      } else {
+        observer.error("Request failed");
+      }
+    };
+    return () => {
+      source.close();
+    };
+  });
+}

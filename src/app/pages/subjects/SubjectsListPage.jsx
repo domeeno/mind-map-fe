@@ -4,7 +4,7 @@ import { map } from "rxjs/operators";
 import SubjectCard from "../../components/cards/SubjectCard";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
 
-const SubjectPage = () => {
+const SubjectsListPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState([]);
@@ -94,4 +94,4 @@ const SubjectPage = () => {
   );
 };
 
-export default SubjectPage;
+export default SubjectsListPage;
