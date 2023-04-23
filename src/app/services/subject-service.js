@@ -10,7 +10,7 @@ function getAuthHeader() {
 }
 
 // function that the component will subscribe to to get the data
-export function get(endpoint) {
+export function get() {
   return new Observable((observer) => {
     const source = new EventSource(`${BASE_URL}`, {
       headers: getAuthHeader(),

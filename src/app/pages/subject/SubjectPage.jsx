@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import TreeCanvas from "../../components/canvas/SubjectTreeCanvas";
+import TreeCanvas from "../../components/canvas/TreeCanvas";
 import { getSubject } from "../../services/subject-service";
 
-const SubjectTree = () => {
+const SubjectPage = () => {
   const { id } = useParams();
 
   const [subjectLoading, setSubjectLoading] = useState(true);
@@ -41,12 +41,16 @@ const SubjectTree = () => {
         </h1>
         <p className="text-gray-400">{subject.description}</p>
       </div>
-      <div>
-        <TreeCanvas />
-      </div>
-      <button onClick={goBack}>{"< "}Back</button>
+
+      <button className="py-3" onClick={goBack}>
+        {"< "}Back
+      </button>
+      {subject.rootTopic && (
+        <div>
+          <TreeCanvas rootTopicId={subject.rootTopic} />
+        </div>
+      )}
     </div>
   );
 };
-
-export default SubjectTree;
+export default SubjectPage;

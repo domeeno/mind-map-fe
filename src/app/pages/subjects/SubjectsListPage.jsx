@@ -11,7 +11,7 @@ const SubjectsListPage = () => {
 
   useEffect(() => {
     setData([]);
-    const subscription = get("")
+    const subscription = get()
       .pipe(
         map((item) => {
           return item;
@@ -28,14 +28,13 @@ const SubjectsListPage = () => {
 
   const getData = () => {
     setData([]);
-    const subscription = get("")
+    const subscription = get()
       .pipe(
         map((item) => {
           return item;
         })
       )
       .subscribe((item) => {
-        console.log(item);
         setData((data) => [...data, item]);
       });
 

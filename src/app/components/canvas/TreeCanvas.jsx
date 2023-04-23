@@ -1,11 +1,32 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState} from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import Topic from "./Topic";
 import CanvasLoader from "./Loader";
 import Connection from "./Connection";
+import { getTopicTree } from "../../services/topic-service";
+import { map } from "rxjs/operators";
 
-const TreeCanvas = () => {
+const TreeCanvas = ({rootTopicId}) => {
+  const [topics, setTopics] = useState([]);
+
+  useEffect(() => {
+    setTopics([]);
+    const subscription = getTopicTree(rootTopicId)
+      .pipe(
+        map((item) => {
+          return item;
+        })
+      )
+      .subscribe((item) => {
+        setTopics((topics) => [...topics, item]);
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [rootTopicId]);
+
   return (
     <Canvas style={{ height: 1000 }}>
       <pointLight color="indianred" />
