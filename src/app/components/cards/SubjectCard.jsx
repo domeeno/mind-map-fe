@@ -1,8 +1,8 @@
 import React from "react";
 
-const SubjectCard = ({ item }) => {
+const SubjectCard = ({ item, handleClick }) => {
   return (
-    <div className="w-full p-2 hover:cursor-pointer">
+    <div className="w-full p-2 hover:cursor-pointer" onClick={handleClick}>
       <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden ">
         <div className="h-full p-6 group border-gray-200 border-opacity-60 rounded-lg overflow-hidden shadow-lg hover:bg-gray-800 transition-all duration-300">
           <h2 className="text-2xl font-bold mb-2">{item.subjectName}</h2>

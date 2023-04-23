@@ -5,6 +5,7 @@ import WelcomePage from "../pages/welcome/WelcomePage";
 import NotFoundPage from "../pages/notfound/NotFoundPage";
 import SubjectPage from "../pages/subjects/SubjectPage";
 import AboutPage from "../pages/about/AboutPage";
+import SubjectTree from "../pages/subjecttree/SubjectTree";
 
 const RenderRoutes = () => {
   let element = useRoutes([
@@ -23,7 +24,7 @@ const RenderRoutes = () => {
       children: [
         {
           path: "/subjects/:id",
-          element: <SubjectPage />,
+          element: <SubjectTree />,
         },
       ],
     },
