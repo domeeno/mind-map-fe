@@ -12,7 +12,7 @@ const App = () => {
       <Router>
         <KeycloakProvider>
           <Header />
-          <div className={`${styles.paddingX} flex-1 w-full `}>
+          <div className={`${styles.paddingX} flex-1`}>
             <Routes>
               <Route path="*" element={<RenderRoutes />} />
             </Routes>

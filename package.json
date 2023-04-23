@@ -6,6 +6,7 @@
     "@emailjs/browser": "^3.11.0",
     "@react-rxjs/core": "^0.10.4",
     "@react-rxjs/utils": "^0.9.5",
+    "@react-three/drei": "^9.65.5",
     "@react-three/fiber": "^8.12.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

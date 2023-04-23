@@ -1,37 +1,38 @@
-import React, { useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-
-const Topic = (props) => {
-   // This reference will give us direct access to the mesh
-   const mesh = useRef()
-   // Set up state for the hovered and active state
-   const [hovered, setHover] = useState(false)
-   const [active, setActive] = useState(false)
-   // Subscribe this component to the render-loop, rotate the mesh every frame
-   useFrame((state, delta) => (mesh.current.rotation.x += delta))
-   // Return view, these are regular three.js elements expressed in JSX
-   return (
-     <mesh
-       {...props}
-       ref={mesh}
-       scale={active ? 1.5 : 1}
-       onClick={(event) => setActive(!active)}
-       onPointerOver={(event) => setHover(true)}
-       onPointerOut={(event) => setHover(false)}>
-       <dodecahedronGeometry args={[1, 1, 1]} />
-       <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-     </mesh>
-   )
-};
+import React, { Suspense } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, OrthographicCamera } from "@react-three/drei";
+import Topic from "./Topic";
+import CanvasLoader from "./Loader";
 
 const TreeCanvas = () => {
-return (
-  <Canvas>
-    <ambientLight />
-    <pointLight position={[10, 10, 10]} />
-    <Topic position={[-1.2, 0, 0]} />
-    <Topic position={[1.2, 0, 0]} />
-  </Canvas>
+  return (
+    <Canvas style={{height: 1000}}>
+      <pointLight color="indianred" />
+      <pointLight position={[10, 10, -10]} color="orange" />
+      <pointLight position={[-10, -10, 10]} color="lightblue" />
+      
+      
+      <Topic position={[0, 0, 0]} clickHandler={() => console.log("clicked")} />
+
+      <Topic position={[0, 5, 0]} clickHandler={() => console.log("clicked")} />
+
+      <Topic position={[6, 5, 0]} clickHandler={() => console.log("clicked")} />
+
+      <OrthographicCamera
+        makeDefault
+        zoom={25}
+        top={200}
+        bottom={-200}
+        left={200}
+        right={-200}
+        near={1}
+        far={2000}
+        position={[0, 0, 60]}
+      />
+      <OrbitControls enableRotate={false} enableZoom={false} />
+      <Suspense fallback={<CanvasLoader />} />
+
+    </Canvas>
   );
 };
 

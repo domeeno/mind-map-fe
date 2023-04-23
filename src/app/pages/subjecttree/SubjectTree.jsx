@@ -14,11 +14,11 @@ const SubjectTree = () => {
   return (
     <div>
       {/* button to go back */}
-      <button onClick={goBack}>Back</button>
+      <button onClick={goBack}>{"< "}Back</button>
       <h1>Tree {id}</h1>
 
-      {/* div element that takes the whole remaining space of its parent size using tailwind classes*/}
-      <div className="flex-1 w-full">
+      {/* expand this div untill footer with tailwind classes*/}
+      <div>
         <TreeCanvas />
       </div>
     </div>
