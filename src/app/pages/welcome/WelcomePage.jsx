@@ -3,7 +3,7 @@ import { styles } from "../../../styles";
 
 const WelcomePage = () => {
   return (
-    <section className="h-screen mx-auto">
+    <section>
       <div
         className={`${styles.paddingX} relative top-[40px] max-w-7xl mx-auto flex flex-row items-start gap-8 `}
       >
@@ -12,9 +12,13 @@ const WelcomePage = () => {
           <div className="w-1 sm:h-80 h-40 bg-gradient-to-b from-[#0077C2] to-[#0077C200]" />
         </div>
         <div>
-          <h1 className={`${styles.welcomeMainText} text-[#0077C2]`}>.Hortex</h1>
-          <p className={`${styles.welcomeSubText} mt-4` }>some text underneath</p>
-          <p className={`${styles.welcomeSubText} mt-4` }>it works trust me</p>
+          <h1 className={`${styles.welcomeMainText} text-[#0077C2]`}>
+            .Hortex
+          </h1>
+          <p className={`${styles.welcomeSubText} mt-4`}>
+            some text underneath
+          </p>
+          <p className={`${styles.welcomeSubText} mt-4`}>it works trust me</p>
         </div>
       </div>
     </section>
