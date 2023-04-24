@@ -3,7 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import "./Topic.css";
 
-const Topic = ({ position, clickHandler, topic, root }) => {
+const Topic = ({ position, onTopicClick, topic, root }) => {
   // This reference will give us direct access to the mesh
   const mesh = useRef();
   const scale = root ? 1.5 : 1;
@@ -15,12 +15,17 @@ const Topic = ({ position, clickHandler, topic, root }) => {
   // Subscribe this component to the render-loop, rotate the mesh every frame
   useFrame((state, delta) => {
     mesh.current.rotation.y = !active
-      ? mesh.current.rotation.y + delta / 2
+      ? mesh.current.rotation.y + delta / 15
       : mesh.current.rotation.y;
     mesh.current.rotation.x = !active
-      ? mesh.current.rotation.y - delta / 2
+      ? mesh.current.rotation.y - delta / 15
       : mesh.current.rotation.x;
   });
+
+  const handleClick = () => {
+    onTopicClick(topic);
+    setActive(!active);
+  };
 
   // Return view, these are regular three.js elements expressed in JSX
   return (
@@ -28,9 +33,7 @@ const Topic = ({ position, clickHandler, topic, root }) => {
       position={position}
       ref={mesh}
       scale={active ? scale * 1.5 : scale}
-      onClick={() => {
-        setActive(!active);
-      }}
+      onClick={() => handleClick()}
       onPointerOver={(event) => setHover(true)}
       onPointerOut={(event) => setHover(false)}
     >
@@ -42,15 +45,31 @@ const Topic = ({ position, clickHandler, topic, root }) => {
 
       <Html>
         <div
-          onClick={() => {
-            setActive(!active);
-          }}
+          onClick={() => handleClick()}
           className={`${
             hovered ? "text-gray-200" : "text-gray-600"
-          } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full left-1/2 transform -translate-x-1/2 translate-y-10  `}
+          } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full left-1/2 transform -translate-x-1/2 translate-y-10`}
         >
           {topic.topicName}
         </div>
+        {active && (
+          <div>
+            <button
+              className={`${
+                hovered ? "text-gray-200" : "text-gray-600"
+              } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-5 -translate-y-20`}
+            >
+              New
+            </button>
+            <button
+              className={`${
+                hovered ? "text-gray-200" : "text-gray-600"
+              } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-20 -translate-y-10`}
+            >
+              Edit
+            </button>
+          </div>
+        )}
       </Html>
     </mesh>
   );

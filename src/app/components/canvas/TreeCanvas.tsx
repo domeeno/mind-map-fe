@@ -1,11 +1,11 @@
-import React, { Suspense, useEffect, useState} from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import CanvasLoader from "./Loader";
 import { getTopicTree, buildNodes } from "../../services/topic-service";
 import { map, toArray } from "rxjs/operators";
 import { Subscription } from "rxjs";
-import { TopicDTO, Node } from "../../interface/interface"
+import { TopicDTO, Node } from "../../interface/interface";
 import Tree from "./Tree";
 
 interface TreeCanvasProps {
@@ -15,9 +15,12 @@ interface TreeCanvasProps {
 const TreeCanvas: React.FC<TreeCanvasProps> = ({ rootTopicId }) => {
   const [nodes, setNodes] = useState<Node[]>([]);
 
-  useEffect(() => {
-    console.log("nodes", nodes);
-  }, [nodes]);
+  const [selectedTopic, setSelectedTopic] = useState<TopicDTO>();
+
+  function onTopicClick(topic: TopicDTO) {
+    console.log(topic.id)
+    setSelectedTopic(topic);
+  }
 
   useEffect(() => {
     setNodes([]);
@@ -45,7 +48,9 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({ rootTopicId }) => {
       <pointLight position={[10, 10, -10]} color="orange" />
       <pointLight position={[-10, -10, 10]} color="lightblue" />
 
-      { nodes.length !== 0 && <Tree node={nodes[0]} />}
+      {nodes.length !== 0 && (
+        <Tree node={nodes[0]} handleSelect={onTopicClick} />
+      )}
 
       <OrthographicCamera makeDefault zoom={25} position={[0, 0, 10]} />
       <OrbitControls enableRotate={false} enableZoom={false} />

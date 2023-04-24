@@ -1,10 +1,11 @@
 import React from "react";
-import { Node } from "../../interface/interface";
+import { Node, TopicDTO } from "../../interface/interface";
 import Topic from "./Topic";
 import Connection from "./Connection";
 
 interface Props {
   node: Node;
+  handleSelect: (topic: TopicDTO) => void;
   radius?: number;
   angleStep?: number;
   centerX?: number;
@@ -13,6 +14,7 @@ interface Props {
 
 const Tree: React.FC<Props> = ({
   node,
+  handleSelect,
   radius = 10,
   angleStep = (Math.PI / 2) / node.children.length,
   centerX = 0,
@@ -25,7 +27,7 @@ const Tree: React.FC<Props> = ({
         key={node.topic.id}
         root={node.topic.type === "ROOT"}
         position={[centerX, centerY, 0]}
-        clickHandler={() => console.log("clicked")}
+        onTopicClick={handleSelect}
       />
 
       {node.children.map((child, index) => {
@@ -43,6 +45,7 @@ const Tree: React.FC<Props> = ({
               opacity={50}
             />
             <Tree
+              handleSelect={handleSelect}
               node={child}
               key={child.topic.id}
               radius={radius}
