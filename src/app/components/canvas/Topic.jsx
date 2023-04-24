@@ -3,7 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import "./Topic.css";
 
-const Topic = ({ position, onTopicClick, topic, root }) => {
+const Topic = ({ position, onTopicClick, topic, root, handlenewMode, handleEditMode }) => {
   // This reference will give us direct access to the mesh
   const mesh = useRef();
   const scale = root ? 1.5 : 1;
@@ -55,6 +55,7 @@ const Topic = ({ position, onTopicClick, topic, root }) => {
         {active && (
           <div>
             <button
+              onClick={handlenewMode}
               className={`${
                 hovered ? "text-gray-200" : "text-gray-600"
               } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-5 -translate-y-20`}
@@ -62,6 +63,7 @@ const Topic = ({ position, onTopicClick, topic, root }) => {
               New
             </button>
             <button
+              onClick={handleEditMode}
               className={`${
                 hovered ? "text-gray-200" : "text-gray-600"
               } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-20 -translate-y-10`}

@@ -7,10 +7,19 @@ import { getTopicTree } from "../../services/topic-service";
 const TreeLogic = () => {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [selectedTopic, setSelectedTopic] = useState<TopicDTO>();
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [newMode, setNewMode] = useState<boolean>(false);
 
   const handleTopicClick = (topic: TopicDTO) => {
-    console.log(topic.id);
     setSelectedTopic(topic);
+  };
+
+  const handlenewMode = () => {
+    setNewMode(!newMode);
+  };
+
+  const handleEditMode = () => {
+    setEditMode(!editMode);
   };
 
   const getTree = (rootTopicId) => {
@@ -69,10 +78,16 @@ const TreeLogic = () => {
   };
 
   return {
+    service: {
+      handleTopicClick,
+      getTree,
+      handlenewMode,
+      handleEditMode,
+    },
     nodes,
-    selectedTopic,
-    handleTopicClick,
-    getTree,
+    editMode,
+    newMode,
+    selectedTopic
   };
 };
 
