@@ -1,4 +1,3 @@
-
 import { Observable } from "rxjs";
 
 const BASE_URL = "http://localhost:8082/api/topic"; // replace with your backend URL
@@ -30,4 +29,39 @@ export function getTopicTree(rootTopicId) {
       source.close();
     };
   });
+}
+
+export function buildNodes(topics) {
+  const nodes = [];
+  const map = {};
+
+  // First pass - map nodes by ID and build the top level of the hierarchy
+  for (const topic of topics) {
+    const id = topic.id;
+    const parentId = topic.parentId;
+    const node = { topic, children: [] };
+
+    // Add node to map
+    map[id] = node;
+
+    // If no parentId, this is a top-level node
+    if (!parentId) {
+      nodes.push(node);
+    }
+  }
+
+  // Second pass - add children to their parents
+  for (const topic of topics) {
+    const id = topic.id;
+    const parentId = topic.parentId;
+    const node = map[id];
+
+    // If this node has a parent, add it as a child
+    if (parentId) {
+      const parent = map[parentId];
+      parent.children.push(node);
+    }
+  }
+
+  return nodes;
 }
