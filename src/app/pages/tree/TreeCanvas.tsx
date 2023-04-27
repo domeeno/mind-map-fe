@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import CanvasLoader from "../../components/canvas/Loader";
@@ -13,8 +13,6 @@ interface TreeCanvasProps {
 
 const TreeCanvas: React.FC<TreeCanvasProps> = ({ rootTopicId }) => {
 
-  const [refresh, setRefresh] = useState(false);
-
   const {
     nodes,
     newMode,
@@ -25,14 +23,10 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({ rootTopicId }) => {
 
   useEffect(() => {
     service.getTree(rootTopicId);
-  }, [rootTopicId, refresh]);
+  }, [rootTopicId, service]);
 
   const handleTopicSubmit = async (rootTopicId: string, newTopic: TopicDTO) => {
-    try {
-      const response = await service.createSubtopic(rootTopicId, newTopic);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+      console.log("Data:", rootTopicId, newTopic);
   };
 
   return (
@@ -55,7 +49,6 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({ rootTopicId }) => {
         {(editMode && selectedTopic?.id) && (
           <TopicCard handleClick={handleTopicSubmit} topic={selectedTopic} parentId={selectedTopic?.id}/>
         )}
-        {/* {readingTopic && <ReadingCard /> } */}
       </div>
     </div>
   );
