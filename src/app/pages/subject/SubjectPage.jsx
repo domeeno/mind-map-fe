@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import TreeCanvas from "../../components/canvas/TreeCanvas";
+import TreeCanvas from "../tree/TreeCanvas";
 import { getSubject } from "../../services/subject-service";
 
 const SubjectPage = () => {

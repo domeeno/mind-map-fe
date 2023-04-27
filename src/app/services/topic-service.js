@@ -31,37 +31,17 @@ export function getTopicTree(rootTopicId) {
   });
 }
 
-export function buildNodes(topics) {
-  const nodes = [];
-  const map = {};
-
-  // First pass - map nodes by ID and build the top level of the hierarchy
-  for (const topic of topics) {
-    const id = topic.id;
-    const parentId = topic.parentId;
-    const node = { topic, children: [] };
-
-    // Add node to map
-    map[id] = node;
-
-    // If no parentId, this is a top-level node
-    if (!parentId) {
-      nodes.push(node);
+export function postTopicTree(rootTopicId, data) {
+  return fetch(`${BASE_URL}/${rootTopicId}/subtopic`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  }).then((response) => {
+    if (response.ok) {
+      return response.json();
     }
-  }
-
-  // Second pass - add children to their parents
-  for (const topic of topics) {
-    const id = topic.id;
-    const parentId = topic.parentId;
-    const node = map[id];
-
-    // If this node has a parent, add it as a child
-    if (parentId) {
-      const parent = map[parentId];
-      parent.children.push(node);
-    }
-  }
-
-  return nodes;
+    throw new Error("Request failed");
+  });
 }

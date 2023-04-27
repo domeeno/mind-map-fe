@@ -16,9 +16,9 @@ const WelcomePage = () => {
             .Hortex
           </h1>
           <p className={`${styles.welcomeSubText} mt-4`}>
-            some text underneath
+            Build your second brain.
           </p>
-          <p className={`${styles.welcomeSubText} mt-4`}>it works trust me</p>
+          <p className={`${styles.welcomeSubText} mt-4`}>Learn complex subjects and develop your long term memory that will last you a lifetime</p>
         </div>
       </div>
     </section>

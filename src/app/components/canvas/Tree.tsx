@@ -6,6 +6,8 @@ import Connection from "./Connection";
 interface Props {
   node: Node;
   handleSelect: (topic: TopicDTO) => void;
+  handlenewMode: () => void;
+  handleEditMode: () => void;
   radius?: number;
   angleStep?: number;
   centerX?: number;
@@ -16,6 +18,8 @@ const Tree: React.FC<Props> = ({
   node,
   handleSelect,
   radius = 10,
+  handleEditMode,
+  handlenewMode,
   angleStep = (Math.PI / 2) / node.children.length,
   centerX = 0,
   centerY = 0,
@@ -24,6 +28,8 @@ const Tree: React.FC<Props> = ({
     <group>
       <Topic
         topic={node.topic}
+        handleEditMode={handleEditMode}
+        handlenewMode={handlenewMode}
         key={node.topic.id}
         root={node.topic.type === "ROOT"}
         position={[centerX, centerY, 0]}
@@ -46,6 +52,8 @@ const Tree: React.FC<Props> = ({
             />
             <Tree
               handleSelect={handleSelect}
+              handlenewMode={handlenewMode}
+              handleEditMode={handleEditMode}
               node={child}
               key={child.topic.id}
               radius={radius}
