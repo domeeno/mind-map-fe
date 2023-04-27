@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Node, TopicDTO } from "../../interface/interface";
 import { Subscription } from "rxjs";
 import { toArray, map } from "rxjs";
-import { getTopicTree } from "../../services/topic-service";
+import { getTopicTree, postTopicTree } from "../../services/topic-service";
 
 const TreeLogic = () => {
   const [nodes, setNodes] = useState<Node[]>([]);
@@ -27,7 +27,6 @@ const TreeLogic = () => {
     const subscription: Subscription = getTopicTree(rootTopicId)
       .pipe(
         map((item: TopicDTO) => {
-          console.log(item);
           return item;
         }),
         toArray(),
@@ -41,6 +40,13 @@ const TreeLogic = () => {
       subscription.unsubscribe();
     };
   };
+
+  async function createSubtopic(rootTopicId: string, data: any) {
+    try {
+      const response = await postTopicTree(rootTopicId, data);
+    } catch (error) {
+    }
+  }
 
   const buildNodes = (topics: TopicDTO[]): Node[] => {
     const nodes: Node[] = [];
@@ -83,6 +89,7 @@ const TreeLogic = () => {
       getTree,
       handlenewMode,
       handleEditMode,
+      createSubtopic
     },
     nodes,
     editMode,

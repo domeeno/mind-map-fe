@@ -31,3 +31,17 @@ export function getTopicTree(rootTopicId) {
   });
 }
 
+export function postTopicTree(rootTopicId, data) {
+  return fetch(`${BASE_URL}/${rootTopicId}/subtopic`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  }).then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error("Request failed");
+  });
+}

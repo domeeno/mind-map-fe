@@ -5,6 +5,7 @@ import CanvasLoader from "../../components/canvas/Loader";
 import Tree from "../../components/canvas/Tree";
 import TreeLogic from "./TreeLogic";
 import TopicCard from "../../components/cards/TopicCard";
+import { TopicDTO } from "../../interface/interface";
 
 interface TreeCanvasProps {
   rootTopicId: string;
@@ -19,16 +20,19 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({ rootTopicId }) => {
     newMode,
     editMode,
     selectedTopic,
-    service
+    service,
   } = TreeLogic();
 
   useEffect(() => {
     service.getTree(rootTopicId);
   }, [rootTopicId, refresh]);
 
-  const handleTopicSubmit = () => {
-    setRefresh(!refresh);
-    console.log("submit");
+  const handleTopicSubmit = async (rootTopicId: string, newTopic: TopicDTO) => {
+    try {
+      const response = await service.createSubtopic(rootTopicId, newTopic);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -47,9 +51,9 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({ rootTopicId }) => {
         <Suspense fallback={<CanvasLoader />} />
       </Canvas>
       <div>
-        {newMode && <TopicCard handleClick={handleTopicSubmit} />}
-        {editMode && (
-          <TopicCard handleClick={handleTopicSubmit} topic={selectedTopic} />
+        {(newMode && selectedTopic?.id) && <TopicCard handleClick={handleTopicSubmit} parentId={selectedTopic.id}/>}
+        {(editMode && selectedTopic?.id) && (
+          <TopicCard handleClick={handleTopicSubmit} topic={selectedTopic} parentId={selectedTopic?.id}/>
         )}
         {/* {readingTopic && <ReadingCard /> } */}
       </div>

@@ -3,8 +3,8 @@ import { TopicDTO } from "../../interface/interface";
 
 interface TopicCardProps {
   topic?: TopicDTO;
-  parentId?: string;
-  handleClick: () => void;
+  parentId: string;
+  handleClick: (rootTopicId: string, topic: TopicDTO) => void;
 }
 
 const TopicCard = ({ topic, handleClick, parentId}: TopicCardProps) => {
@@ -20,7 +20,6 @@ const TopicCard = ({ topic, handleClick, parentId}: TopicCardProps) => {
   });
 
   useEffect(() => {
-    console.log(topic)
     if (topic) {
       setFormData(topic);
     }
@@ -36,11 +35,11 @@ const TopicCard = ({ topic, handleClick, parentId}: TopicCardProps) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // submit form data
-    console.log(formData);
+    handleClick(parentId, formData)
   };
 
   return (
-    <div className="p-2" onClick={handleClick}>
+    <div className="p-2" onClick={() => handleClick(parentId, formData)}>
       <div className=" border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden ">
         <div className=" p-6 group border-gray-200 border-opacity-60 rounded-lg overflow-hidden shadow-lg">
           <form onSubmit={handleSubmit}>
