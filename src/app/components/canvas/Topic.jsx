@@ -15,10 +15,10 @@ const Topic = ({ position, onTopicClick, topic, root, handlenewMode, handleEditM
   // Subscribe this component to the render-loop, rotate the mesh every frame
   useFrame((state, delta) => {
     mesh.current.rotation.y = !active
-      ? mesh.current.rotation.y + delta / 15
+      ? mesh.current.rotation.y + delta / 12
       : mesh.current.rotation.y;
     mesh.current.rotation.x = !active
-      ? mesh.current.rotation.y - delta / 15
+      ? mesh.current.rotation.y - delta / 12
       : mesh.current.rotation.x;
   });
 

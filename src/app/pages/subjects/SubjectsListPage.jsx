@@ -8,8 +8,12 @@ const SubjectsListPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
+    console.log("useEffect", loading);
     setData([]);
     const subscription = get()
       .pipe(
@@ -17,8 +21,18 @@ const SubjectsListPage = () => {
           return item;
         })
       )
-      .subscribe((item) => {
-        setData((data) => [...data, item]);
+      .subscribe({
+        next: (item) => {
+          setData((data) => [...data, item]);
+        },
+        error: (error) => {
+          console.log("error", error);
+          setError(error);
+        },
+        complete: () => {
+          console.log("loading complete");
+          setLoading(false);
+        },
       });
 
     return () => {
@@ -27,6 +41,8 @@ const SubjectsListPage = () => {
   }, []);
 
   const getData = () => {
+    setLoading(true);
+    console.log("useEffect", loading);
     setData([]);
     const subscription = get()
       .pipe(
@@ -34,8 +50,18 @@ const SubjectsListPage = () => {
           return item;
         })
       )
-      .subscribe((item) => {
-        setData((data) => [...data, item]);
+      .subscribe({
+        next: (item) => {
+          setData((data) => [...data, item]);
+        },
+        error: (error) => {
+          console.log("error", error);
+          setError(error);
+        },
+        complete: () => {
+          console.log("loading complete");
+          setLoading(false);
+        },
       });
 
     return () => {
@@ -76,10 +102,21 @@ const SubjectsListPage = () => {
                 />
               ))}
             </div>
-            {data.length === 6 && (
+
+            {error && (
+              <div className="border-2 border-red-800 border-opacity-60 rounded-lg overflow-hidden mb-6">
+                <div className="p-6 group border-red-800 border-opacity-60 rounded-lg overflow-hidden shadow-lg hover:bg-gray-800 transition-all duration-300">
+                  "Something went wrong, please refresh or try again later."
+                </div>
+              </div>
+            )}
+
+            {!loading && (
               <button
                 className="text-teal-200 hover:text-indigo-200 py-2 px-4 border border-gray-500 hover:border-transparent rounded"
-                onClick={getData}
+                onClick={() => {
+                  getData();
+                }}
               >
                 Refresh...
               </button>
