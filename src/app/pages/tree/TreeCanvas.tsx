@@ -2,61 +2,45 @@ import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import CanvasLoader from "../../components/canvas/Loader";
-import Tree from "../../components/canvas/Tree";
-import TreeLogic from "./TreeLogic";
-import TopicCard from "../../components/cards/TopicCard";
+import Topic from "../../components/canvas/Topic";
 import { TopicDTO } from "../../interface/interface";
 
 interface TreeCanvasProps {
   rootTopicId: string;
 }
 
-const TreeCanvas: React.FC<TreeCanvasProps> = ({ rootTopicId }) => {
-
-  const [refresh, setRefresh] = useState(false);
-
-  const {
-    nodes,
-    newMode,
-    editMode,
-    selectedTopic,
-    service,
-  } = TreeLogic();
+const TreeCanvas: React.FC<TreeCanvasProps> = () => {
+  const [topic, setTopic] = useState<TopicDTO>();
 
   useEffect(() => {
-    service.getTree(rootTopicId);
-  }, [rootTopicId, refresh]);
-
-  const handleTopicSubmit = async (rootTopicId: string, newTopic: TopicDTO) => {
-    try {
-      const response = await service.createSubtopic(rootTopicId, newTopic);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+    setTopic({
+      id: "1",
+      type: "TOPIC",
+      color: "#ffffff",
+      topicName: "Root",
+      weight: "MEDIUM",
+      tags: [],
+      parentId: "",
+      userId: null,
+    });
+  }, []);
 
   return (
-    <div className="flex flex-row">
-      <Canvas style={{ height: 1000 }}>
+    <div className="h-screen">
+      {/* side panel with all topics */}
+
+      <Canvas>
         <pointLight color="indianred" />
         <pointLight position={[10, 10, -10]} color="orange" />
         <pointLight position={[-10, -10, 10]} color="lightblue" />
 
-        {nodes.length !== 0 && (
-          <Tree node={nodes[0]} handleSelect={service.handleTopicClick} handleEditMode={service.handleEditMode} handlenewMode={service.handlenewMode} />
-        )}
+        <Topic position={[0, 0, 0]} topic={topic}/>
 
         <OrthographicCamera makeDefault zoom={25} position={[0, 0, 10]} />
         <OrbitControls enableRotate={false} enableZoom={false} />
         <Suspense fallback={<CanvasLoader />} />
       </Canvas>
-      <div>
-        {(newMode && selectedTopic?.id) && <TopicCard handleClick={handleTopicSubmit} parentId={selectedTopic.id}/>}
-        {(editMode && selectedTopic?.id) && (
-          <TopicCard handleClick={handleTopicSubmit} topic={selectedTopic} parentId={selectedTopic?.id}/>
-        )}
-        {/* {readingTopic && <ReadingCard /> } */}
-      </div>
+      <div>{/* Topic Card */}</div>
     </div>
   );
 };

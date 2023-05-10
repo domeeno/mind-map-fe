@@ -3,10 +3,13 @@ import { useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import "./Topic.css";
 
-const Topic = ({ position, onTopicClick, topic, root, handlenewMode, handleEditMode }) => {
+const Topic = ({ position, topic }) => {
   // This reference will give us direct access to the mesh
   const mesh = useRef();
-  const scale = root ? 1.5 : 1;
+
+  // const scale = root ? 1.5 : 1;
+
+  const scale = 1;
 
   // Set up state for the hovered and active state
   const [hovered, setHover] = useState(false);
@@ -23,7 +26,6 @@ const Topic = ({ position, onTopicClick, topic, root, handlenewMode, handleEditM
   });
 
   const handleClick = () => {
-    onTopicClick(topic);
     setActive(!active);
   };
 
@@ -55,7 +57,7 @@ const Topic = ({ position, onTopicClick, topic, root, handlenewMode, handleEditM
         {active && (
           <div>
             <button
-              onClick={handlenewMode}
+              onClick={() => console.log("New")}
               className={`${
                 hovered ? "text-gray-200" : "text-gray-600"
               } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-5 -translate-y-20`}
@@ -63,7 +65,7 @@ const Topic = ({ position, onTopicClick, topic, root, handlenewMode, handleEditM
               New
             </button>
             <button
-              onClick={handleEditMode}
+              onClick={() => console.log("Edit")}
               className={`${
                 hovered ? "text-gray-200" : "text-gray-600"
               } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-20 -translate-y-10`}

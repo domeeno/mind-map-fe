@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { get } from "../../services/subject-service";
+import { getSubjectTopics } from "../../services/subject-service";
 import { map } from "rxjs/operators";
 import SubjectCard from "../../components/cards/SubjectCard";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
+import { styles } from "../../../styles";
 
 const SubjectsListPage = () => {
   const navigate = useNavigate();
@@ -13,9 +14,10 @@ const SubjectsListPage = () => {
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     console.log("useEffect", loading);
     setData([]);
-    const subscription = get()
+    const subscription = getSubjectTopics()
       .pipe(
         map((item) => {
           return item;
@@ -28,6 +30,8 @@ const SubjectsListPage = () => {
         error: (error) => {
           console.log("error", error);
           setError(error);
+          setLoading(false);
+          console.log("loading complete", loading);
         },
         complete: () => {
           console.log("loading complete");
@@ -42,9 +46,10 @@ const SubjectsListPage = () => {
 
   const getData = () => {
     setLoading(true);
+    setError(null);
     console.log("useEffect", loading);
     setData([]);
-    const subscription = get()
+    const subscription = getSubjectTopics()
       .pipe(
         map((item) => {
           return item;
@@ -57,6 +62,8 @@ const SubjectsListPage = () => {
         error: (error) => {
           console.log("error", error);
           setError(error);
+          setLoading(false);
+          console.log("loading complete", loading);
         },
         complete: () => {
           console.log("loading complete");
@@ -76,7 +83,7 @@ const SubjectsListPage = () => {
   return (
     <div>
       {!id ? (
-        <div>
+        <div className={`${styles.paddingX}`}>
           <div className="flex flex-col justify-between items-center py-10">
             <h1 className="font-bold text-2xl sm:text-5xl bg-clip-text sm:mb-4 text-[#0077C2]">
               Subjects
@@ -106,7 +113,7 @@ const SubjectsListPage = () => {
             {error && (
               <div className="border-2 border-red-800 border-opacity-60 rounded-lg overflow-hidden mb-6">
                 <div className="p-6 group border-red-800 border-opacity-60 rounded-lg overflow-hidden shadow-lg hover:bg-gray-800 transition-all duration-300">
-                  "Something went wrong, please refresh or try again later."
+                  Something went wrong, please refresh or try again later.
                 </div>
               </div>
             )}

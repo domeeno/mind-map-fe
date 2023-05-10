@@ -2,12 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import TreeCanvas from "../tree/TreeCanvas";
 import { getSubject } from "../../services/subject-service";
+import CanvasSidebar from "../../components/sidebar/CanvasSidebar";
 
 const SubjectPage = () => {
   const { id } = useParams();
 
   const [subjectLoading, setSubjectLoading] = useState(true);
   const [subject, setSubject] = useState({});
+
+  const [collapsed, setCollapsed] = useState(false);
+
+  function toggleCollapse() {
+    setCollapsed(!collapsed);
+  }
 
   const navigate = useNavigate();
 
@@ -28,28 +35,20 @@ const SubjectPage = () => {
   };
 
   return (
-    <div>
-      {/* button to go back */}
-      <div
-        className={` ${
-          subjectLoading ? "opacity-0" : "opacity-100"
-        } transition-opacity duration-500`}
-      >
-        <h1 className="py-5">
-          Subject Tree:{" "}
-          <span className="text-[#0077C2]">{subject.subjectName}</span>
-        </h1>
-        <p className="text-gray-400">{subject.description}</p>
-      </div>
+    <div className="flex h-screen">
+      {/* side panel */}
+      <CanvasSidebar
+        toggleCollapse={toggleCollapse}
+        collapsed={collapsed}
+        goBack={goBack}
+        subject={subject}
+        subjectLoading={subjectLoading}
+      />
 
-      <button className="py-3" onClick={goBack}>
-        {"< "}Back
-      </button>
-      {subject.rootTopic && (
-        <div>
-          <TreeCanvas rootTopicId={subject.rootTopic} />
-        </div>
-      )}
+      {/* main focus */}
+      <div className="flex-1">
+        <TreeCanvas />
+      </div>
     </div>
   );
 };
