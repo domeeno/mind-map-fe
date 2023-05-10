@@ -7,6 +7,12 @@ import Topic from "../../components/canvas/Topic";
 const TreeCanvas = () => {
   const [topic, setTopic] = useState(null);
 
+  const [activeTopic, setActiveTopic] = useState(false);
+
+  const handleTopicActive = () => {
+    setActiveTopic(!activeTopic);
+  };
+
   useEffect(() => {
     setTopic({
       id: "1",
@@ -29,7 +35,7 @@ const TreeCanvas = () => {
         <pointLight position={[10, 10, -10]} color="orange" />
         <pointLight position={[-10, -10, 10]} color="lightblue" />
 
-        <Topic position={[0, 0, 0]} topic={topic}/>
+        <Topic position={[0, 0, 0]} topic={topic} onTopicActive={handleTopicActive}/>
 
         <OrthographicCamera makeDefault zoom={25} position={[0, 0, 10]} />
         <OrbitControls enableRotate={false} enableZoom={false} />

@@ -36,11 +36,18 @@ class Topic extends Component {
     cancelAnimationFrame(this.frameId);
   }
 
-  handleClick = () => {
+  handleActive = () => {
     console.log(this.state.active, this.scale);
-    this.setState((prevState) => ({
-      active: !prevState.active,
-    }));
+    this.setState(
+      (prevState) => ({
+        active: !prevState.active,
+      }),
+      () => {
+        if (this.props.onTopicActive) {
+          this.props.onTopicActive(this.state.active); // Call the onTopicActive prop function and pass the active state
+        }
+      }
+    );
   };
 
   handleHover = (value) => {
@@ -58,7 +65,7 @@ class Topic extends Component {
         position={position}
         ref={this.meshRef}
         scale={active ? this.scale * 1.5 : this.scale}
-        onClick={this.handleClick}
+        onClick={this.handleActive}
         onPointerOver={() => this.handleHover(true)}
         onPointerOut={() => this.handleHover(false)}
       >
@@ -70,7 +77,7 @@ class Topic extends Component {
 
         <Html>
           <div
-            onClick={this.handleClick}
+            onClick={this.handleActive}
             className={`${
               hovered ? "text-gray-200" : "text-gray-600"
             } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full left-1/2 transform -translate-x-1/2 translate-y-10`}
