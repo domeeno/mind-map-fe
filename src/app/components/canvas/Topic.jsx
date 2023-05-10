@@ -1,82 +1,106 @@
-import React, { useRef, useState } from "react";
+import React, { Component } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import "./Topic.css";
 
-const Topic = ({ position, topic }) => {
-  // This reference will give us direct access to the mesh
-  const mesh = useRef();
-
-  // const scale = root ? 1.5 : 1;
-
-  const scale = 1;
-
-  // Set up state for the hovered and active state
-  const [hovered, setHover] = useState(false);
-  const [active, setActive] = useState(false);
-
-  // Subscribe this component to the render-loop, rotate the mesh every frame
-  useFrame((state, delta) => {
-    mesh.current.rotation.y = !active
-      ? mesh.current.rotation.y + delta / 12
-      : mesh.current.rotation.y;
-    mesh.current.rotation.x = !active
-      ? mesh.current.rotation.y - delta / 12
-      : mesh.current.rotation.x;
-  });
-
-  const handleClick = () => {
-    setActive(!active);
+class Topic extends Component {
+  state = {
+    hovered: false,
+    active: false,
   };
 
-  // Return view, these are regular three.js elements expressed in JSX
-  return (
-    <mesh
-      position={position}
-      ref={mesh}
-      scale={active ? scale * 1.5 : scale}
-      onClick={() => handleClick()}
-      onPointerOver={(event) => setHover(true)}
-      onPointerOut={(event) => setHover(false)}
-    >
-      <dodecahedronGeometry />
-      <meshStandardMaterial
-        roughness={0.75}
-        emmisive={!hovered ? "#404057" : "#040475"}
-      />
+  meshRef = React.createRef();
+  scale = 1;
+  rotationSpeed = 5 / (10 * 1000);
+  lastUpdated = 0;
+  frameId = null;
 
-      <Html>
-        <div
-          onClick={() => handleClick()}
-          className={`${
-            hovered ? "text-gray-200" : "text-gray-600"
-          } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full left-1/2 transform -translate-x-1/2 translate-y-10`}
-        >
-          {topic.topicName}
-        </div>
-        {active && (
-          <div>
-            <button
-              onClick={() => console.log("New")}
-              className={`${
-                hovered ? "text-gray-200" : "text-gray-600"
-              } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-5 -translate-y-20`}
-            >
-              New
-            </button>
-            <button
-              onClick={() => console.log("Edit")}
-              className={`${
-                hovered ? "text-gray-200" : "text-gray-600"
-              } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-20 -translate-y-10`}
-            >
-              Edit
-            </button>
+  animate = (time) => {
+    const delta = time - this.lastUpdated;
+
+    if (!this.state.active) {
+      this.meshRef.current.rotation.y += this.rotationSpeed * delta;
+      this.meshRef.current.rotation.x -= this.rotationSpeed * delta;
+    }
+
+    this.lastUpdated = time;
+    this.frameId = requestAnimationFrame(this.animate);
+  };
+
+  componentDidMount() {
+    this.lastUpdated = performance.now();
+    this.frameId = requestAnimationFrame(this.animate);
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this.frameId);
+  }
+
+  handleClick = () => {
+    console.log(this.state.active, this.scale);
+    this.setState((prevState) => ({
+      active: !prevState.active,
+    }));
+  };
+
+  handleHover = (value) => {
+    this.setState({
+      hovered: value,
+    });
+  };
+
+  render() {
+    const { position, topic } = this.props;
+    const { hovered, active } = this.state;
+
+    return (
+      <mesh
+        position={position}
+        ref={this.meshRef}
+        scale={active ? this.scale * 1.5 : this.scale}
+        onClick={this.handleClick}
+        onPointerOver={() => this.handleHover(true)}
+        onPointerOut={() => this.handleHover(false)}
+      >
+        <dodecahedronGeometry />
+        <meshStandardMaterial
+          roughness={0.75}
+          emissive={!hovered ? "#404057" : "#040475"}
+        />
+
+        <Html>
+          <div
+            onClick={this.handleClick}
+            className={`${
+              hovered ? "text-gray-200" : "text-gray-600"
+            } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full left-1/2 transform -translate-x-1/2 translate-y-10`}
+          >
+            {topic.topicName}
           </div>
-        )}
-      </Html>
-    </mesh>
-  );
-};
+          {active && (
+            <div>
+              <button
+                onClick={() => console.log("New")}
+                className={`${
+                  hovered ? "text-gray-200" : "text-gray-600"
+                } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-5 -translate-y-20`}
+              >
+                New
+              </button>
+              <button
+                onClick={() => console.log("Edit")}
+                className={`${
+                  hovered ? "text-gray-200" : "text-gray-600"
+                } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-20 -translate-y-10`}
+              >
+                Edit
+              </button>
+            </div>
+          )}
+        </Html>
+      </mesh>
+    );
+  }
+}
 
 export default Topic;

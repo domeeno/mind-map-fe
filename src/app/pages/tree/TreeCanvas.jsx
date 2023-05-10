@@ -3,14 +3,9 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import CanvasLoader from "../../components/canvas/Loader";
 import Topic from "../../components/canvas/Topic";
-import { TopicDTO } from "../../interface/interface";
 
-interface TreeCanvasProps {
-  rootTopicId: string;
-}
-
-const TreeCanvas: React.FC<TreeCanvasProps> = () => {
-  const [topic, setTopic] = useState<TopicDTO>();
+const TreeCanvas = () => {
+  const [topic, setTopic] = useState(null);
 
   useEffect(() => {
     setTopic({
