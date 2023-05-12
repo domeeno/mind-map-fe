@@ -14,12 +14,8 @@ interface Props {
   centerY?: number;
 }
 
-const Tree: React.FC<Props> = ({
-}) => {
-  return (
-    <group>
-    </group>
-  );
+const Tree: React.FC<Props> = ({}) => {
+  return <group></group>;
 };
 
 export default Tree;

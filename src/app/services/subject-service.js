@@ -10,7 +10,7 @@ function getAuthHeader() {
 }
 
 // function that the component will subscribe to to get the data
-export function getSubjectTopics() {
+export function getSubjects() {
   return new Observable((observer) => {
     const source = new EventSource(`${BASE_URL}`, {
       headers: getAuthHeader(),
@@ -21,7 +21,6 @@ export function getSubjectTopics() {
     };
 
     source.onerror = (event) => {
-      console.log(event);
       if (event.eventPhase === EventSource.CLOSED) {
         observer.complete();
       } else {

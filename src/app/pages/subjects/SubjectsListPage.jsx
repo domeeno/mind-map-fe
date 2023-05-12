@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getSubjectTopics } from "../../services/subject-service";
+import { getSubjects } from "../../services/subject-service";
 import { map } from "rxjs/operators";
 import SubjectCard from "../../components/cards/SubjectCard";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
@@ -15,9 +15,8 @@ const SubjectsListPage = () => {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    console.log("useEffect", loading);
     setData([]);
-    const subscription = getSubjectTopics()
+    const subscription = getSubjects()
       .pipe(
         map((item) => {
           return item;
@@ -28,13 +27,10 @@ const SubjectsListPage = () => {
           setData((data) => [...data, item]);
         },
         error: (error) => {
-          console.log("error", error);
           setError(error);
           setLoading(false);
-          console.log("loading complete", loading);
         },
         complete: () => {
-          console.log("loading complete");
           setLoading(false);
         },
       });
@@ -47,9 +43,8 @@ const SubjectsListPage = () => {
   const getData = () => {
     setLoading(true);
     setError(null);
-    console.log("useEffect", loading);
     setData([]);
-    const subscription = getSubjectTopics()
+    const subscription = getSubjects()
       .pipe(
         map((item) => {
           return item;
@@ -60,13 +55,10 @@ const SubjectsListPage = () => {
           setData((data) => [...data, item]);
         },
         error: (error) => {
-          console.log("error", error);
           setError(error);
           setLoading(false);
-          console.log("loading complete", loading);
         },
         complete: () => {
-          console.log("loading complete");
           setLoading(false);
         },
       });

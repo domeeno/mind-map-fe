@@ -1,4 +1,3 @@
-
 export interface TopicDTO {
   id: string;
   type: "ROOT" | "TOPIC" | "DOCUMENT";
@@ -11,6 +10,6 @@ export interface TopicDTO {
 }
 
 export interface Node {
-    topic: TopicDTO;
-    children: Node[];
+  topic: TopicDTO;
+  connections: Node[];
 }

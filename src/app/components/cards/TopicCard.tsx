@@ -7,7 +7,7 @@ interface TopicCardProps {
   handleClick: (rootTopicId: string, topic: TopicDTO) => void;
 }
 
-const TopicCard = ({ topic, handleClick, parentId}: TopicCardProps) => {
+const TopicCard = ({ topic, handleClick, parentId }: TopicCardProps) => {
   const [formData, setFormData] = useState<TopicDTO>({
     id: "",
     type: "TOPIC",
@@ -35,7 +35,7 @@ const TopicCard = ({ topic, handleClick, parentId}: TopicCardProps) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // submit form data
-    handleClick(parentId, formData)
+    handleClick(parentId, formData);
   };
 
   return (

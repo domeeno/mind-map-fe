@@ -47,7 +47,7 @@ const SubjectPage = () => {
 
       {/* main focus */}
       <div className="flex-1">
-        <TreeCanvas />
+        <TreeCanvas subjectId={subject.id} />
       </div>
     </div>
   );

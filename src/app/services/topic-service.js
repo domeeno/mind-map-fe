@@ -10,14 +10,16 @@ function getAuthHeader() {
 }
 
 // function that the component will subscribe to to get the data
-export function getTopicTree(rootTopicId) {
+export function getSubjectTopics(subjectId) {
   return new Observable((observer) => {
-    const source = new EventSource(`${BASE_URL}/tree/${rootTopicId}`, {
+    const source = new EventSource(`${BASE_URL}/tree/${subjectId}`, {
       headers: getAuthHeader(),
     });
+
     source.onmessage = (event) => {
       observer.next(JSON.parse(event.data));
     };
+
     source.onerror = (event) => {
       if (event.eventPhase === EventSource.CLOSED) {
         observer.complete();
@@ -25,6 +27,7 @@ export function getTopicTree(rootTopicId) {
         observer.error("Request failed");
       }
     };
+
     return () => {
       source.close();
     };
