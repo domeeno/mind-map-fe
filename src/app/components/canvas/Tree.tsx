@@ -1,7 +1,6 @@
 import React from "react";
-import { Node, TopicDTO } from "../../interface/interface";
-import Topic from "./Topic";
-import Connection from "./Connection";
+import { Node } from "../../interface/interface";
+import { TopicDTO } from "../../generated/NetworkApi";
 
 interface Props {
   node: Node;

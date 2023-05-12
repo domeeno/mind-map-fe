@@ -4,12 +4,8 @@ import { OrbitControls, OrthographicCamera } from "@react-three/drei";
 import CanvasLoader from "../../components/canvas/Loader";
 import Topic from "../../components/canvas/Topic";
 import TreeLogic from "./TreeLogic";
-import { useParams } from "react-router-dom";
-import { getSubjectTopics } from "../../services/topic-service";
-import { map } from "rxjs";
 
 const TreeCanvas = ({ subjectId }) => {
-  const [topic, setTopic] = useState(null);
   const [refresh, setRefresh] = useState(false);
 
   const [activeTopic, setActiveTopic] = useState(false);
@@ -25,19 +21,6 @@ const TreeCanvas = ({ subjectId }) => {
     setActiveTopicId(topicId);
     setActiveTopic(active);
   };
-
-  useEffect(() => {
-    setTopic({
-      id: "1",
-      type: "TOPIC",
-      color: "#ffffff",
-      topicName: "Root",
-      weight: "MEDIUM",
-      tags: [],
-      parentId: "",
-      userId: null,
-    });
-  }, []);
 
   return (
     <div className="h-screen">

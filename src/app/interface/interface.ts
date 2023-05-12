@@ -1,13 +1,4 @@
-export interface TopicDTO {
-  id: string;
-  type: "ROOT" | "TOPIC" | "DOCUMENT";
-  color: string;
-  weight: "XS" | "LIGHT" | "MEDIUM" | "HEAVY" | "XL" | "ROOT";
-  tags: string[];
-  parentId: string;
-  userId: string | null;
-  topicName: string;
-}
+import { TopicDTO } from "../generated/NetworkApi";
 
 export interface Node {
   topic: TopicDTO;

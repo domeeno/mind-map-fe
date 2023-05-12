@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Node, TopicDTO } from "../../interface/interface";
-import { Subscription } from "rxjs";
-import { toArray, map } from "rxjs";
-import { getSubjectTopics, postTopicTree } from "../../services/topic-service";
+import { map } from "rxjs";
+import { getSubjectTopics } from "../../services/topic-service";
+import { TopicDTO } from "../../generated/NetworkApi";
 
 const TreeLogic = () => {
   const [nodes, setNodes] = useState<TopicDTO[]>([]);

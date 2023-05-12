@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import "./Topic.css";
 
@@ -10,7 +9,7 @@ class Topic extends Component {
   };
 
   meshRef = React.createRef();
-  scale = 1;
+  scale = 0.6;
   rotationSpeed = 5 / (10 * 1000);
   lastUpdated = 0;
   frameId = null;
