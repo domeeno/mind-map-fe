@@ -64,6 +64,16 @@ class Topic extends Component {
     });
   };
 
+  getPosition = () => {
+    return this.props.position;
+  };
+
+  setActive = (value) => {
+    this.setState({
+      active: value,
+    });
+  };
+
   render() {
     const { position, topic } = this.props;
     const { hovered, active } = this.state;

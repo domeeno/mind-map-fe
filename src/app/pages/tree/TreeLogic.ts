@@ -1,10 +1,13 @@
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import { map } from "rxjs";
 import { getSubjectTopics } from "../../services/topic-service";
 import { TopicDTO } from "../../generated/NetworkApi";
+import Topic from "../../components/canvas/Topic";
 
 const TreeLogic = () => {
   const [nodes, setNodes] = useState<TopicDTO[]>([]);
+  const [tree, setTree] = useState<TopicDTO[]>([]);
+  const topicRefs = useRef<{ [key: string]: React.RefObject<Topic> }>({});
 
   const getTopics = (subjectId: string) => {
     setNodes([]);
@@ -15,8 +18,9 @@ const TreeLogic = () => {
         })
       )
       .subscribe({
-        next: (item) => {
-          console.log("this", item);
+        next: (item: TopicDTO) => {
+          console.log(item)
+          topicRefs.current[item.id] = React.createRef<Topic>();
           setNodes((data) => [...data, item]);
         },
         error: (error) => {
@@ -30,46 +34,13 @@ const TreeLogic = () => {
     };
   };
 
-  // const buildNodes = (topics: TopicDTO[]): Node[] => {
-  //   const nodes: Node[] = [];
-  //   const map = {};
-
-  //   // First pass - map nodes by ID and build the top level of the hierarchy
-  //   for (const topic of topics) {
-  //     const id = topic.id;
-  //     const parentId = topic.parentId;
-  //     const node = { topic, children: [] };
-
-  //     // Add node to map
-  //     map[id] = node;
-
-  //     // If no parentId, this is a top-level node
-  //     if (!parentId) {
-  //       nodes.push(node);
-  //     }
-  //   }
-
-  //   // Second pass - add children to their parents
-  //   for (const topic of topics) {
-  //     const id = topic.id;
-  //     const parentId = topic.parentId;
-  //     const node = map[id];
-
-  //     // If this node has a parent, add it as a child
-  //     if (parentId) {
-  //       const parent = map[parentId];
-  //       parent.children.push(node);
-  //     }
-  //   }
-
-  //   return nodes;
-  // };
-
   return {
     service: {
       getTopics,
     },
     nodes,
+    tree,
+    topicRefs
   };
 };
 
