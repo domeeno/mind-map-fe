@@ -40,7 +40,8 @@ const SubjectPage = () => {
 
   const handleCanvasEvent = (event: CanvasEvents, data: any) => {
     if (event === CanvasEvents.TAGS_UPDATE) {
-      setTagList(data);
+      // filter duplicates from data
+      setTagList([...new Set(data as string[])])
     }
   };
 

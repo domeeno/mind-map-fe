@@ -54,6 +54,7 @@ export interface TopicDTO {
   childIds: string[];
   userId?: string;
   topicName: string;
+  documentId?: string;
 }
 
 export interface SubjectSearchDTO {

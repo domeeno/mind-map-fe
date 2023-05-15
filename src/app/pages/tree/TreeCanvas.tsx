@@ -6,7 +6,8 @@ import TreeLogic from "./TreeLogic";
 import Tree from "../../components/canvas/Tree";
 import TopicEditCard from "../../components/cards/TopicEditCard";
 import { CanvasEvents } from "../../interface/interface";
-import QuillEditor from "../../components/editor/QuillEditor";
+import { putTopic } from "../../services/topic-service";
+import { TopicDTO } from "../../generated/NetworkApi";
 
 interface TreeCanvasProps {
   subjectId: string;
@@ -50,6 +51,17 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({
   useEffect(() => {
     notifyEvent(CanvasEvents.TAGS_UPDATE, state.tags);
   }, [state.tags]);
+ 
+  const onCloseEditCard = () => {
+    if (!state.activeTopic) return;
+    handler.handleTopicActive(state.activeTopic.id, false);
+  }
+
+  const handlePutTopic = (topic: TopicDTO) => {
+    putTopic(topic.id, topic).then(() =>{
+      handler.updateNodeById(topic.id, topic);
+    })
+  }
 
   return (
     <div className="flex h-full w-full relative">
@@ -73,18 +85,15 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({
         <OrbitControls enableRotate={false} enableZoom={true} />
         <Suspense fallback={<CanvasLoader />} />
       </Canvas>
-      <div className="w-1/4 absolute" style={{ right: 0 }}>
-        {state.activeTopic && (
-          <div>
-            <TopicEditCard
-              topic={state.activeTopic}
-              onSubmit={() => console.log("yes indeed")}
-            ></TopicEditCard>
-
-            <QuillEditor />
-          </div>
-        )}
-      </div>
+      {state.activeTopic && (
+        <div className="w-1/4 absolute border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden p-6" style={{ right: 0 }}>
+          <TopicEditCard
+            topic={state.activeTopic}
+            onSubmit={handlePutTopic}
+            onClose={onCloseEditCard}
+          ></TopicEditCard>
+        </div>
+      )}
     </div>
   );
 };

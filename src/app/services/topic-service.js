@@ -48,3 +48,18 @@ export function postTopicTree(rootTopicId, data) {
     throw new Error("Request failed");
   });
 }
+
+export function putTopic(topicId, data) {
+  return fetch(`${BASE_URL}/${topicId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  }).then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error("Request failed");
+  });
+}

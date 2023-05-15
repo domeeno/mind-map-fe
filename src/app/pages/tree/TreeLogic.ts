@@ -7,9 +7,9 @@ import Topic from "../../components/canvas/Topic";
 const TreeLogic = () => {
   const [nodes, setNodes] = useState<TopicDTO[]>([]);
   const topicRefs = useRef<{ [key: string]: React.RefObject<Topic> }>({});
-  const [activeTopic, setActiveTopic] = useState<TopicDTO | null | undefined>(
-    null
-  );
+  // const [activeTopic, setActiveTopic] = useState<TopicDTO | null | undefined>(
+  //   null
+  // );
   const [activeTopicId, setActiveTopicId] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
 
@@ -45,14 +45,10 @@ const TreeLogic = () => {
         nodeRef?.setActive(false);
       }
     });
-    if (active) {
-      setActiveTopicId(topicId);
-      setActiveTopic(nodes.find((node) => node.id === topicId));
-    } else {
-      setActiveTopicId(null);
-      setActiveTopic(null);
-    }
+    setActiveTopicId(active? topicId : null)
   };
+
+  const activeTopic = nodes.find((node) => node.id === activeTopicId);
 
   const handleHighlightTag = (tag: string, activeSelection: boolean) => {
     nodes.forEach((node) => {
@@ -73,6 +69,14 @@ const TreeLogic = () => {
     });
   };
 
+  const updateNodeById = (id: string, node: TopicDTO) => {
+    const newNodes = nodes.map(item => {
+      if (item.id !== id) return item
+      return node
+    })
+    setNodes(newNodes);
+  }
+
   return {
     service: {
       getTopics,
@@ -80,6 +84,7 @@ const TreeLogic = () => {
     handler: {
       handleTopicActive,
       handleHighlightTag,
+      updateNodeById,
       setTags,
     },
     state: {
