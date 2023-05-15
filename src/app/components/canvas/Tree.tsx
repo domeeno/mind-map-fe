@@ -9,6 +9,7 @@ interface Props {
   y: number;
   handleTopicActive: (topicId: string, active: boolean) => void;
   nodes: TopicDTO[];
+  depth?: number;
 }
 
 const Tree: React.FC<Props> = ({
@@ -18,13 +19,13 @@ const Tree: React.FC<Props> = ({
   y,
   handleTopicActive,
   nodes,
+  depth = 0,
 }) => {
   const [neighbours, setNeighbours] = useState<any[]>([]);
 
   useEffect(() => {
     getNeighboursRefs(topic);
   }, [topic]);
-
 
   const getNeighboursRefs = (topic: TopicDTO) => {
     const topicNeighbours: any[] = [];
@@ -36,6 +37,28 @@ const Tree: React.FC<Props> = ({
     });
 
     setNeighbours(topicNeighbours);
+  };
+
+  const calculatePosition = (index, childLength) => {
+    const angleStep = Math.PI / 2 / topic.childIds.length;
+    const radius = 10 + (depth * 1.2);
+
+    let angle;
+
+    if (childLength === 1) {
+      angle = angleStep * index;
+    } else {
+      if (childLength % 2 === 0) {
+        angle = angleStep * (index - Math.floor(childLength / 2) + 0.5);
+      } else {
+        angle = angleStep * (index - Math.floor(childLength / 2));
+      }
+    }
+
+    const childX = x + radius * Math.cos(angle);
+    const childY = y + radius * Math.sin(angle);
+
+    return [childX, childY];
   };
 
   return (
@@ -51,20 +74,23 @@ const Tree: React.FC<Props> = ({
 
       {topic.childIds.map((childId, index) => {
         const childTopic = nodes.find((node) => node.id === childId);
-        const angleStep = Math.PI / 2 / topic.childIds.length;
-        const radius = 16;
-        const angle = angleStep * (index);
-        const childX = x + radius * Math.cos(angle);
-        const childY = y + radius * Math.sin(angle);
 
+        const [childX, childY] = calculatePosition(
+          index,
+          topic.childIds.length
+        );
+
+        console.log(childTopic?.topicName);
         return (
           <Tree
+            key={childId}
             topicRefs={topicRefs}
             handleTopicActive={handleTopicActive}
             topic={childTopic!}
             x={childX}
             y={childY}
             nodes={nodes}
+            depth={depth + 1}
           />
         );
       })}

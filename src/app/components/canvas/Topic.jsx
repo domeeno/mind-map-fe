@@ -12,7 +12,7 @@ class Topic extends Component {
   meshRef = React.createRef();
   scale = 0.6;
   rotationSpeed = 5 / (10 * 1000);
-  hoveredSpeed = 500 / (10 * 1000);
+  hoveredSpeed = 250 / (10 * 1000);
   lastUpdated = 0;
   frameId = null;
 
