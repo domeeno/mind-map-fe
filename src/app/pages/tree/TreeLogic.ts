@@ -19,7 +19,6 @@ const TreeLogic = () => {
       )
       .subscribe({
         next: (item: TopicDTO) => {
-          console.log(item)
           topicRefs.current[item.id] = React.createRef<Topic>();
           setNodes((data) => [...data, item]);
         },
