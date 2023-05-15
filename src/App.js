@@ -11,11 +11,11 @@ const App = () => {
       <Router>
         <KeycloakProvider>
           <Header />
-          <div className="flex-1">
-            <Routes>
-              <Route path="*" element={<RenderRoutes />} />
-            </Routes>
-          </div>
+          {/* <div className="flex-1 min-h-0"> */}
+          <Routes>
+            <Route path="*" element={<RenderRoutes />} />
+          </Routes>
+          {/* </div> */}
           <Footer />
         </KeycloakProvider>
       </Router>

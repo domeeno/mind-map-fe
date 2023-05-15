@@ -6,6 +6,8 @@ import CanvasSidebar from "../../components/sidebar/CanvasSidebar";
 import { CanvasEvents } from "../../interface/interface";
 import { SubjectDTO } from "../../generated/NetworkApi";
 
+const getTemplateColumns = (size) => `${size}rem calc(100% - ${size}rem)`;
+
 const SubjectPage = () => {
   const { id } = useParams();
 
@@ -51,8 +53,10 @@ const SubjectPage = () => {
     navigate(`/subjects`);
   };
 
+  const gridTemplateColumns = getTemplateColumns(collapsed ? 3 : 20);
+
   return (
-    <div className="flex h-screen">
+    <div className="grid h-full" style={{ gridTemplateColumns }}>
       {/* side panel */}
       <CanvasSidebar
         toggleCollapse={toggleCollapse}
@@ -65,13 +69,12 @@ const SubjectPage = () => {
       />
 
       {/* main focus */}
-      <div className="flex-1">
-        <TreeCanvas
-          notifyEvent={handleCanvasEvent}
-          subjectId={subject.id}
-          canvasRef={canvasRef}
-        />
-      </div>
+
+      <TreeCanvas
+        notifyEvent={handleCanvasEvent}
+        subjectId={subject.id}
+        canvasRef={canvasRef}
+      />
     </div>
   );
 };

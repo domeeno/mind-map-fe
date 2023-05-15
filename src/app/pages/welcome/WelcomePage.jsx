@@ -3,7 +3,7 @@ import { styles } from "../../../styles";
 
 const WelcomePage = () => {
   return (
-    <section>
+    <section className="flex-1">
       <div
         className={`${styles.paddingX} relative top-[40px] max-w-7xl mx-auto flex flex-row items-start gap-8 `}
       >

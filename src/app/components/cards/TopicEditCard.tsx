@@ -7,7 +7,6 @@ interface TopicEditCardProps {
 }
 
 const TopicEditCard: React.FC<TopicEditCardProps> = ({ topic, onSubmit }) => {
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(topic);
@@ -21,8 +20,11 @@ const TopicEditCard: React.FC<TopicEditCardProps> = ({ topic, onSubmit }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="topicName">
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="topicName"
+          >
             Topic Name
           </label>
           <input

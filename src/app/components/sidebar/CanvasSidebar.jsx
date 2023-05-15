@@ -12,11 +12,7 @@ const CanvasSidebar = ({
   return (
     <>
       {!collapsed ? (
-        <div
-          className={`flex flex-col w-64 border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden p-6 transition-all duration-300 ${
-            collapsed ? "-ml-64" : "ml-0"
-          }`}
-        >
+        <div className="flex-shrink-0 flex-col max-w-xs w-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden p-6 transition-all duration-300">
           <button className="p-4" onClick={toggleCollapse}>
             <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
               <path d="M12 8l-4 4 4 4v-3h8v-2h-8V8z" />

@@ -41,7 +41,7 @@ const Tree: React.FC<Props> = ({
 
   const calculatePosition = (index, childLength) => {
     const angleStep = Math.PI / 2 / topic.childIds.length;
-    const radius = 10 + (depth * 1.2);
+    const radius = 10 + depth * 1.2;
 
     let angle;
 

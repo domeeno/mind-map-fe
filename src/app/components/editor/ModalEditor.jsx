@@ -1,4 +1,4 @@
-import ReactModal from 'react-modal';
+import ReactModal from "react-modal";
 
 const MyModal = ({ isOpen, onRequestClose }) => {
   return (
@@ -15,4 +15,3 @@ const MyModal = ({ isOpen, onRequestClose }) => {
 };
 
 export default MyModal;
-

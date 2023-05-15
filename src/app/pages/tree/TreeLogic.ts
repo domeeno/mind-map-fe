@@ -6,7 +6,6 @@ import Topic from "../../components/canvas/Topic";
 
 const TreeLogic = () => {
   const [nodes, setNodes] = useState<TopicDTO[]>([]);
-  const [tree, setTree] = useState<TopicDTO[]>([]);
   const topicRefs = useRef<{ [key: string]: React.RefObject<Topic> }>({});
   const [activeTopic, setActiveTopic] = useState<TopicDTO | null | undefined>(
     null
@@ -57,7 +56,7 @@ const TreeLogic = () => {
 
   const handleHighlightTag = (tag: string, activeSelection: boolean) => {
     nodes.forEach((node) => {
-      console.log(activeSelection)
+      console.log(activeSelection);
       if (activeSelection) {
         const nodeRef = topicRefs.current[node.id].current;
 
@@ -85,7 +84,6 @@ const TreeLogic = () => {
     },
     state: {
       nodes,
-      tree,
       tags,
       activeTopic,
       topicRefs,

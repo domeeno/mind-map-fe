@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
+import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 const MarkdownEditor = () => {
-  const [markdown, setMarkdown] = useState('');
+  const [markdown, setMarkdown] = useState("");
 
   const handleInputChange = (event) => {
     setMarkdown(event.target.value);
