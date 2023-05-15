@@ -80,7 +80,6 @@ const Tree: React.FC<Props> = ({
           topic.childIds.length
         );
 
-        console.log(childTopic?.topicName);
         return (
           <Tree
             key={childId}

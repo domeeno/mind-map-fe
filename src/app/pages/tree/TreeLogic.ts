@@ -8,9 +8,15 @@ const TreeLogic = () => {
   const [nodes, setNodes] = useState<TopicDTO[]>([]);
   const [tree, setTree] = useState<TopicDTO[]>([]);
   const topicRefs = useRef<{ [key: string]: React.RefObject<Topic> }>({});
+  const [activeTopic, setActiveTopic] = useState<TopicDTO | null | undefined>(
+    null
+  );
+  const [activeTopicId, setActiveTopicId] = useState<string | null>(null);
+  const [tags, setTags] = useState<string[]>([]);
 
   const getTopics = (subjectId: string) => {
     setNodes([]);
+    setTags([]);
     const subscription = getSubjectTopics(subjectId)
       .pipe(
         map((item) => {
@@ -33,13 +39,58 @@ const TreeLogic = () => {
     };
   };
 
+  const handleTopicActive = (topicId: string, active: boolean) => {
+    nodes.forEach((node) => {
+      const nodeRef = topicRefs.current[node.id].current;
+      if (node.id !== topicId && nodeRef?.getActive()) {
+        nodeRef?.setActive(false);
+      }
+    });
+    if (active) {
+      setActiveTopicId(topicId);
+      setActiveTopic(nodes.find((node) => node.id === topicId));
+    } else {
+      setActiveTopicId(null);
+      setActiveTopic(null);
+    }
+  };
+
+  const handleHighlightTag = (tag: string, activeSelection: boolean) => {
+    nodes.forEach((node) => {
+      console.log(activeSelection)
+      if (activeSelection) {
+        const nodeRef = topicRefs.current[node.id].current;
+
+        if (node.tags.includes(tag)) {
+          console.log("found one");
+          nodeRef?.handleHover(true);
+        } else {
+          nodeRef?.handleHover(false);
+        }
+      } else {
+        const nodeRef = topicRefs.current[node.id].current;
+        nodeRef?.handleHover(false);
+      }
+    });
+  };
+
   return {
     service: {
       getTopics,
     },
-    nodes,
-    tree,
-    topicRefs
+    handler: {
+      handleTopicActive,
+      handleHighlightTag,
+      setTags,
+    },
+    state: {
+      nodes,
+      tree,
+      tags,
+      activeTopic,
+      topicRefs,
+      activeTopicId,
+    },
   };
 };
 

@@ -4,6 +4,8 @@ const CanvasSidebar = ({
   toggleCollapse,
   collapsed,
   goBack,
+  tagList,
+  onTagClick,
   subject,
   subjectLoading,
 }) => {
@@ -36,6 +38,17 @@ const CanvasSidebar = ({
               </h1>
               <p className="text-gray-400">{subject.description}</p>
             </div>
+          </div>
+          <div className="flex flex-wrap mt-2">
+            {tagList.map((tag, index) => (
+              <span
+                onClick={() => onTagClick(tag)}
+                className="text-sm inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-800 rounded-full mr-2 mb-2"
+                key={index}
+              >
+                {`#${tag}`}
+              </span>
+            ))}
           </div>
         </div>
       ) : (
