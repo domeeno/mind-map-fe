@@ -23,10 +23,11 @@ const Tree: React.FC<Props> = ({
 }) => {
   const [neighbours, setNeighbours] = useState<any[]>([]);
 
+  
   useEffect(() => {
     getNeighboursRefs(topic);
   }, [topic]);
-
+  
   const getNeighboursRefs = (topic: TopicDTO) => {
     const topicNeighbours: any[] = [];
     topic.childIds.forEach((childId) => {
@@ -35,7 +36,7 @@ const Tree: React.FC<Props> = ({
     topic.parentIds.forEach((parentId) => {
       topicNeighbours.push(topicRefs.current[parentId]);
     });
-
+    
     setNeighbours(topicNeighbours);
   };
 

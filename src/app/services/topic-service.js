@@ -40,7 +40,7 @@ export function postTopicTree(rootTopicId, data) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: `${JSON.stringify(data)}`,
   }).then((response) => {
     if (response.ok) {
       return response.json();
@@ -63,3 +63,4 @@ export function putTopic(topicId, data) {
     throw new Error("Request failed");
   });
 }
+

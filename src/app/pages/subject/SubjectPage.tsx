@@ -50,6 +50,7 @@ const SubjectPage = () => {
     canvasRef.current.handleHighlightTag(tag, activeSelection);
   };
 
+
   const goBack = () => {
     navigate(`/subjects`);
   };

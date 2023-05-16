@@ -37,13 +37,14 @@ const CanvasSidebar = ({
           </div>
           <div className="flex flex-wrap mt-2">
             {tagList.map((tag, index) => (
-              <span
+              <button
+                type="button"
                 onClick={() => onTagClick(tag)}
                 className="text-sm inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-800 rounded-full mr-2 mb-2"
                 key={index}
               >
                 {`#${tag}`}
-              </span>
+              </button>
             ))}
           </div>
         </div>

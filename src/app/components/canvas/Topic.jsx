@@ -126,7 +126,7 @@ class Topic extends Component {
               onClick={() => this.handleActive(topic.id)}
               className={`${
                 hovered ? "text-gray-200" : "text-gray-600"
-              } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full left-1/2 transform -translate-x-1/2 translate-y-10`}
+              } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full left-1/2 transform -translate-x-1/2 translate-y-10 topic-name`}
             >
               {topic.topicName}
             </div>
@@ -136,7 +136,7 @@ class Topic extends Component {
                   onClick={() => console.log("New")}
                   className={`${
                     hovered ? "text-gray-200" : "text-gray-600"
-                  } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-5 -translate-y-20`}
+                  } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-5 -translate-y-20 topic-action`}
                 >
                   New
                 </button>
@@ -144,7 +144,7 @@ class Topic extends Component {
                   onClick={() => console.log("Edit")}
                   className={`${
                     hovered ? "text-gray-200" : "text-gray-600"
-                  } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-20 -translate-y-10`}
+                  } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-20 -translate-y-10 topic-action`}
                 >
                   Edit
                 </button>

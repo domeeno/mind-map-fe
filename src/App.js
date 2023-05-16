@@ -4,6 +4,7 @@ import Footer from "./app/components/footer/Footer";
 import RenderRoutes from "./app/routes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { KeycloakProvider } from "./app/components/keycloak/KeycloakProvider";
+import "./styles";
 
 const App = () => {
   return (

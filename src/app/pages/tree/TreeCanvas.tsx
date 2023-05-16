@@ -8,6 +8,7 @@ import TopicEditCard from "../../components/cards/TopicEditCard";
 import { CanvasEvents } from "../../interface/interface";
 import { putTopic } from "../../services/topic-service";
 import { TopicDTO } from "../../generated/NetworkApi";
+import { postFile } from "../../services/file-service";
 
 interface TreeCanvasProps {
   subjectId: string;
@@ -52,20 +53,22 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({
     notifyEvent(CanvasEvents.TAGS_UPDATE, state.tags);
   }, [state.tags]);
  
-  const onCloseEditCard = () => {
+  const closeCard = () => {
     if (!state.activeTopic) return;
     handler.handleTopicActive(state.activeTopic.id, false);
   }
 
-  const handlePutTopic = (topic: TopicDTO) => {
+  const handlePutTopic = (topic: TopicDTO, text: string) => {
     putTopic(topic.id, topic).then(() =>{
       handler.updateNodeById(topic.id, topic);
+      closeCard();
+      postFile(topic.id, text);
     })
   }
 
   return (
     <div className="flex h-full w-full relative">
-      <Canvas>
+      <Canvas style={{zIndex: 0}}>
         <pointLight color="indianred" />
         <pointLight position={[10, 10, -10]} color="orange" />
         <pointLight position={[-10, -10, 10]} color="lightblue" />
@@ -86,12 +89,11 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({
         <Suspense fallback={<CanvasLoader />} />
       </Canvas>
       {state.activeTopic && (
-        <div className="w-1/4 absolute border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden p-6" style={{ right: 0 }}>
-          <TopicEditCard
-            topic={state.activeTopic}
-            onSubmit={handlePutTopic}
-            onClose={onCloseEditCard}
-          ></TopicEditCard>
+      <div className="w-1/4 absolute border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden p-6" style={{ right: '.5rem', top: '.5rem', backgroundColor: '#111' }}>
+        <TopicEditCard
+          topic={state.activeTopic}
+          onSubmit={handlePutTopic}
+        ></TopicEditCard>
         </div>
       )}
     </div>
