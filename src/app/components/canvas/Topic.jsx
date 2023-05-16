@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Html } from "@react-three/drei";
-import "./Topic.css";
 import Connection from "./Connection";
+
 
 class Topic extends Component {
   state = {
@@ -133,7 +133,7 @@ class Topic extends Component {
             {active && (
               <div>
                 <button
-                  onClick={() => console.log("New")}
+                  onClick={() => this.props.handleTopicCreate(topic.id)}
                   className={`${
                     hovered ? "text-gray-200" : "text-gray-600"
                   } text-sm hover:font-bold absolute text-gray-600 hover:text-gray-200 top-full transform -translate-x-5 -translate-y-20 topic-action`}

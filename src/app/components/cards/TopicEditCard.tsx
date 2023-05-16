@@ -4,14 +4,17 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import  './TopicEditCard.css'
 import { VscArrowRight } from "react-icons/vsc";
+import { getFile } from "../../services/file-service";
 
 interface TopicEditCardProps {
-  topic: TopicDTO;
-  onSubmit: (topic: TopicDTO, text:string) => void;
+  topic?: TopicDTO ;
+  onEdit: (topic: TopicDTO, text: string) => void;
+  onCreate: (topicName:string, text: string) => void;
+
 }
 
-const TopicEditCard: React.FC<TopicEditCardProps> = ({ topic, onSubmit }) => {
-  const [topicName, setTopicName] = useState(topic.topicName);
+const TopicEditCard: React.FC<TopicEditCardProps> = ({ topic, onEdit, onCreate }) => {
+  const [topicName, setTopicName] = useState(topic?.topicName);
   const [content, setContent] = useState("");
 
   useEffect(() =>{
@@ -20,15 +23,29 @@ const TopicEditCard: React.FC<TopicEditCardProps> = ({ topic, onSubmit }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({
-      ...topic,
-      topicName,
-    }, content)
+
+    if (topic?.id) {
+      onEdit({
+        ...topic,
+        topicName: topicName || ''
+      }, content);
+      return
+    }
+    
+    onCreate(topicName || '', content)
   };
 
   useEffect(() =>{
-    setTopicName(topic.topicName)
-  }, [topic.topicName])
+    setTopicName(topic?.topicName || '')
+  }, [topic?.topicName, topic])
+
+  useEffect(() =>{
+    if (!topic?.id) {
+      setContent('');
+      return
+    }
+    getFile(topic?.id).then((res) => setContent(res.content) )
+  }, [topic?.id])
 
   return (
     <form onSubmit={handleSubmit} className="topic-edit-card__form">

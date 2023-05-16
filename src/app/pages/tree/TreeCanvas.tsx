@@ -6,7 +6,7 @@ import TreeLogic from "./TreeLogic";
 import Tree from "../../components/canvas/Tree";
 import TopicEditCard from "../../components/cards/TopicEditCard";
 import { CanvasEvents } from "../../interface/interface";
-import { putTopic } from "../../services/topic-service";
+import { postTopic, putTopic } from "../../services/topic-service";
 import { TopicDTO } from "../../generated/NetworkApi";
 import { postFile } from "../../services/file-service";
 
@@ -22,16 +22,16 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({
   canvasRef,
 }) => {
   const [loading, setLoading] = useState<boolean>(true);
+  const [isCreatingTopic, setIsCreatingTopic] = useState<boolean>(false);
 
   const { state, handler, service } = TreeLogic();
 
+  const fetchData = async () => {
+    setLoading(true);
+    await service.getTopics(subjectId);
+    setLoading(false);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await service.getTopics(subjectId);
-      setLoading(false);
-    };
-
     fetchData();
   }, [subjectId]);
 
@@ -66,6 +66,23 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({
     })
   }
 
+  const handlePostTopic = (topicName: string, text: string) => {
+    if (!state.activeTopic) return
+
+    postTopic(subjectId, state.activeTopic.id, topicName).then((res) => {
+      return postFile(res[0].id, text)
+    }).then(() =>{
+      setIsCreatingTopic(false);
+      closeCard()
+      fetchData();
+    })
+  }
+
+  const handleTopicCreate = (id) =>{
+    setIsCreatingTopic(true);
+    // handler.handleTopicCreate(id);
+  } 
+
   return (
     <div className="flex h-full w-full relative">
       <Canvas style={{zIndex: 0}}>
@@ -77,6 +94,7 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({
           <Tree
             topicRefs={state.topicRefs}
             handleTopicActive={handler.handleTopicActive}
+            handleTopicCreate={handleTopicCreate}
             topic={state.nodes[0]}
             x={0}
             y={0}
@@ -88,11 +106,12 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({
         <OrbitControls enableRotate={false} enableZoom={true} />
         <Suspense fallback={<CanvasLoader />} />
       </Canvas>
-      {state.activeTopic && (
+      {(state.activeTopic || isCreatingTopic) && (
       <div className="w-1/4 absolute border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden p-6" style={{ right: '.5rem', top: '.5rem', backgroundColor: '#111' }}>
         <TopicEditCard
-          topic={state.activeTopic}
-          onSubmit={handlePutTopic}
+          topic={isCreatingTopic ? undefined : state.activeTopic}
+          onEdit={handlePutTopic}
+          onCreate={handlePostTopic}
         ></TopicEditCard>
         </div>
       )}

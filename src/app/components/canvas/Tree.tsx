@@ -8,6 +8,7 @@ interface Props {
   x: number;
   y: number;
   handleTopicActive: (topicId: string, active: boolean) => void;
+  handleTopicCreate: (topicId: string) => void;
   nodes: TopicDTO[];
   depth?: number;
 }
@@ -18,6 +19,7 @@ const Tree: React.FC<Props> = ({
   x,
   y,
   handleTopicActive,
+  handleTopicCreate,
   nodes,
   depth = 0,
 }) => {
@@ -71,6 +73,7 @@ const Tree: React.FC<Props> = ({
         position={[x, y, 0]}
         neighbourRefs={neighbours}
         onTopicActive={handleTopicActive}
+        handleTopicCreate={handleTopicCreate}
       />
 
       {topic.childIds.map((childId, index) => {
@@ -86,6 +89,7 @@ const Tree: React.FC<Props> = ({
             key={childId}
             topicRefs={topicRefs}
             handleTopicActive={handleTopicActive}
+            handleTopicCreate={handleTopicCreate}
             topic={childTopic!}
             x={childX}
             y={childY}
