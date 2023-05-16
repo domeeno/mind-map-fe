@@ -1,39 +1,36 @@
-import { useState } from "react";
-import { Node, TopicDTO } from "../../interface/interface";
-import { Subscription } from "rxjs";
-import { toArray, map } from "rxjs";
-import { getTopicTree, postTopicTree } from "../../services/topic-service";
+import React, { useState, useRef } from "react";
+import { map } from "rxjs";
+import { getSubjectTopics } from "../../services/topic-service";
+import { TopicDTO } from "../../generated/NetworkApi";
+import Topic from "../../components/canvas/Topic";
 
 const TreeLogic = () => {
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [selectedTopic, setSelectedTopic] = useState<TopicDTO>();
-  const [editMode, setEditMode] = useState<boolean>(false);
-  const [newMode, setNewMode] = useState<boolean>(false);
+  const [nodes, setNodes] = useState<TopicDTO[]>([]);
+  const topicRefs = useRef<{ [key: string]: React.RefObject<Topic> }>({});
+  // const [activeTopic, setActiveTopic] = useState<TopicDTO | null | undefined>(
+  //   null
+  // );
+  const [activeTopicId, setActiveTopicId] = useState<string | null>(null);
+  const [tags, setTags] = useState<string[]>([]);
 
-  const handleTopicClick = (topic: TopicDTO) => {
-    setSelectedTopic(topic);
-  };
-
-  const handlenewMode = () => {
-    setNewMode(!newMode);
-  };
-
-  const handleEditMode = () => {
-    setEditMode(!editMode);
-  };
-
-  const getTree = (rootTopicId) => {
+  const getTopics = (subjectId: string) => {
     setNodes([]);
-    const subscription: Subscription = getTopicTree(rootTopicId)
+    setTags([]);
+    const subscription = getSubjectTopics(subjectId)
       .pipe(
-        map((item: TopicDTO) => {
+        map((item) => {
           return item;
-        }),
-        toArray(),
-        map((topics: TopicDTO[]) => buildNodes(topics))
+        })
       )
-      .subscribe((nodes: Node[]) => {
-        setNodes(nodes);
+      .subscribe({
+        next: (item: TopicDTO) => {
+          topicRefs.current[item.id] = React.createRef<Topic>();
+          setNodes((data) => [...data, item]);
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {},
       });
 
     return () => {
@@ -41,60 +38,62 @@ const TreeLogic = () => {
     };
   };
 
-  async function createSubtopic(rootTopicId: string, data: any) {
-    try {
-      const response = await postTopicTree(rootTopicId, data);
-    } catch (error) {
-    }
-  }
-
-  const buildNodes = (topics: TopicDTO[]): Node[] => {
-    const nodes: Node[] = [];
-    const map = {};
-
-    // First pass - map nodes by ID and build the top level of the hierarchy
-    for (const topic of topics) {
-      const id = topic.id;
-      const parentId = topic.parentId;
-      const node = { topic, children: [] };
-
-      // Add node to map
-      map[id] = node;
-
-      // If no parentId, this is a top-level node
-      if (!parentId) {
-        nodes.push(node);
+  const handleTopicActive = (topicId: string, active: boolean) => {
+    nodes.forEach((node) => {
+      const nodeRef = topicRefs.current[node.id].current;
+      if (node.id !== topicId && nodeRef?.getActive()) {
+        nodeRef?.setActive(false);
       }
-    }
-
-    // Second pass - add children to their parents
-    for (const topic of topics) {
-      const id = topic.id;
-      const parentId = topic.parentId;
-      const node = map[id];
-
-      // If this node has a parent, add it as a child
-      if (parentId) {
-        const parent = map[parentId];
-        parent.children.push(node);
-      }
-    }
-
-    return nodes;
+    });
+    setActiveTopicId(active? topicId : null)
   };
+
+  const activeTopic = nodes.find((node) => node.id === activeTopicId);
+
+  const handleHighlightTag = (tag: string, activeSelection: boolean) => {
+    nodes.forEach((node) => {
+      console.log(activeSelection);
+      if (activeSelection) {
+        const nodeRef = topicRefs.current[node.id].current;
+
+        if (node.tags.includes(tag)) {
+          console.log("found one");
+          nodeRef?.handleHover(true);
+        } else {
+          nodeRef?.handleHover(false);
+        }
+      } else {
+        const nodeRef = topicRefs.current[node.id].current;
+        nodeRef?.handleHover(false);
+      }
+    });
+  };
+
+  const updateNodeById = (id: string, node: TopicDTO) => {
+    const newNodes = nodes.map(item => {
+      if (item.id !== id) return item
+      return node
+    })
+    setNodes(newNodes);
+  }
 
   return {
     service: {
-      handleTopicClick,
-      getTree,
-      handlenewMode,
-      handleEditMode,
-      createSubtopic
+      getTopics,
     },
-    nodes,
-    editMode,
-    newMode,
-    selectedTopic
+    handler: {
+      handleTopicActive,
+      handleHighlightTag,
+      updateNodeById,
+      setTags,
+    },
+    state: {
+      nodes,
+      tags,
+      activeTopic,
+      topicRefs,
+      activeTopicId,
+    },
   };
 };
 

@@ -10,14 +10,16 @@ function getAuthHeader() {
 }
 
 // function that the component will subscribe to to get the data
-export function get() {
+export function getSubjects() {
   return new Observable((observer) => {
     const source = new EventSource(`${BASE_URL}`, {
       headers: getAuthHeader(),
     });
+
     source.onmessage = (event) => {
       observer.next(JSON.parse(event.data));
     };
+
     source.onerror = (event) => {
       if (event.eventPhase === EventSource.CLOSED) {
         observer.complete();
@@ -25,6 +27,7 @@ export function get() {
         observer.error("Request failed");
       }
     };
+
     return () => {
       source.close();
     };
@@ -36,9 +39,11 @@ export function getSubject(id) {
     const source = new EventSource(`${BASE_URL}/${id}`, {
       headers: getAuthHeader(),
     });
+
     source.onmessage = (event) => {
       observer.next(JSON.parse(event.data));
     };
+
     source.onerror = (event) => {
       if (event.eventPhase === EventSource.CLOSED) {
         observer.complete();
@@ -46,6 +51,7 @@ export function getSubject(id) {
         observer.error("Request failed");
       }
     };
+
     return () => {
       source.close();
     };

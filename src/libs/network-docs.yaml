@@ -1,0 +1,273 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8082
+    description: Generated server url
+paths:
+  /api/subject:
+    get:
+      tags:
+        - subject-controller
+      operationId: getAllSubjects
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubjectDTO"
+    post:
+      tags:
+        - subject-controller
+      operationId: createSubject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSubjectDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/SubjectDTO"
+  /api/topic:
+    get:
+      tags:
+        - topic-controller
+      operationId: getTopics
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TopicDTO"
+  /api/topic/tree/{subjectId}:
+    get:
+      tags:
+        - topic-controller
+      operationId: getSubjectTopics
+      parameters:
+        - name: subjectId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TopicDTO"
+  /api/subject/{subjectId}:
+    get:
+      tags:
+        - subject-controller
+      operationId: getSubject
+      parameters:
+        - name: subjectId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/SubjectDTO"
+  /api/subject/test:
+    get:
+      tags:
+        - subject-controller
+      operationId: test
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/subject/search:
+    get:
+      tags:
+        - subject-controller
+      operationId: getSubjects
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SubjectSearchDTO"
+components:
+  schemas:
+    CreateSubjectDTO:
+      required:
+        - rootTopic
+        - subjectName
+        - tags
+      type: object
+      properties:
+        userId:
+          type: string
+        subjectName:
+          type: string
+        description:
+          type: string
+        rootTopic:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    SubjectDTO:
+      required:
+        - createTimestamp
+        - id
+        - likes
+        - rootTopic
+        - saves
+        - subjectName
+        - tags
+        - updateTimestamp
+      type: object
+      properties:
+        id:
+          type: string
+        subjectName:
+          type: string
+        userId:
+          type: string
+        description:
+          type: string
+        rootTopic:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        likes:
+          type: integer
+          format: int32
+        saves:
+          type: integer
+          format: int32
+        createTimestamp:
+          type: string
+          format: date-time
+        updateTimestamp:
+          type: string
+          format: date-time
+    TopicDTO:
+      required:
+        - childIds
+        - color
+        - id
+        - parentIds
+        - subjectId
+        - tags
+        - topicName
+        - type
+        - weight
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - ROOT
+            - TOPIC
+            - DOCUMENT
+        color:
+          type: string
+          enum:
+            - APP_DEFAULT
+            - USER_DEFAULT
+            - TEAL
+            - MAROON
+            - PURPLE
+            - OLIVE
+            - NAVY
+            - GRAY
+            - SILVER
+        weight:
+          type: string
+          enum:
+            - XS
+            - LIGHT
+            - MEDIUM
+            - HEAVY
+            - XL
+            - ROOT
+        tags:
+          type: array
+          items:
+            type: string
+        subjectId:
+          type: string
+        parentIds:
+          type: array
+          items:
+            type: string
+        childIds:
+          type: array
+          items:
+            type: string
+        userId:
+          type: string
+        topicName:
+          type: string
+    SubjectSearchDTO:
+      required:
+        - subjectId
+        - subjectName
+        - tags
+      type: object
+      properties:
+        subjectId:
+          type: string
+        subjectName:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string

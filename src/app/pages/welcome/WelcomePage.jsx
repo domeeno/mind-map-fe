@@ -3,7 +3,7 @@ import { styles } from "../../../styles";
 
 const WelcomePage = () => {
   return (
-    <section>
+    <section className="flex-1">
       <div
         className={`${styles.paddingX} relative top-[40px] max-w-7xl mx-auto flex flex-row items-start gap-8 `}
       >
@@ -18,7 +18,10 @@ const WelcomePage = () => {
           <p className={`${styles.welcomeSubText} mt-4`}>
             Build your second brain.
           </p>
-          <p className={`${styles.welcomeSubText} mt-4`}>Learn complex subjects and develop your long term memory that will last you a lifetime</p>
+          <p className={`${styles.welcomeSubText} mt-4`}>
+            Learn complex subjects and develop your long term memory that will
+            last you a lifetime
+          </p>
         </div>
       </div>
     </section>

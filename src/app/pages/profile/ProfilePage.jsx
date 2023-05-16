@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useKeycloak } from "../../components/keycloak/KeycloakProvider";
 import { useNavigate } from "react-router";
+import { styles } from "../../../styles";
 
 const ProfilePage = () => {
   const { authenticated } = useKeycloak();
@@ -12,7 +13,7 @@ const ProfilePage = () => {
     }
   }, [authenticated, navigate]);
 
-  return <div>Profile Page</div>;
+  return <div className={`${styles.paddingX}`}>Profile Page</div>;
 };
 
 export default ProfilePage;

@@ -1,67 +1,101 @@
-import React from "react";
-import { Node, TopicDTO } from "../../interface/interface";
+import React, { useEffect, useState } from "react";
+import { TopicDTO } from "../../generated/NetworkApi";
 import Topic from "./Topic";
-import Connection from "./Connection";
 
 interface Props {
-  node: Node;
-  handleSelect: (topic: TopicDTO) => void;
-  handlenewMode: () => void;
-  handleEditMode: () => void;
-  radius?: number;
-  angleStep?: number;
-  centerX?: number;
-  centerY?: number;
+  topic: TopicDTO;
+  topicRefs: any;
+  x: number;
+  y: number;
+  handleTopicActive: (topicId: string, active: boolean) => void;
+  handleTopicCreate: (topicId: string) => void;
+  nodes: TopicDTO[];
+  depth?: number;
 }
 
 const Tree: React.FC<Props> = ({
-  node,
-  handleSelect,
-  radius = 10,
-  handleEditMode,
-  handlenewMode,
-  angleStep = (Math.PI / 2) / node.children.length,
-  centerX = 0,
-  centerY = 0,
+  topic,
+  topicRefs,
+  x,
+  y,
+  handleTopicActive,
+  handleTopicCreate,
+  nodes,
+  depth = 0,
 }) => {
+  const [neighbours, setNeighbours] = useState<any[]>([]);
+
+  
+  useEffect(() => {
+    getNeighboursRefs(topic);
+  }, [topic]);
+  
+  const getNeighboursRefs = (topic: TopicDTO) => {
+    const topicNeighbours: any[] = [];
+    topic.childIds.forEach((childId) => {
+      topicNeighbours.push(topicRefs.current[childId]);
+    });
+    topic.parentIds.forEach((parentId) => {
+      topicNeighbours.push(topicRefs.current[parentId]);
+    });
+    
+    setNeighbours(topicNeighbours);
+  };
+
+  const calculatePosition = (index, childLength) => {
+    const angleStep = Math.PI / 2 / topic.childIds.length;
+    const radius = 10 + depth * 1.2;
+
+    let angle;
+
+    if (childLength === 1) {
+      angle = angleStep * index;
+    } else {
+      if (childLength % 2 === 0) {
+        angle = angleStep * (index - Math.floor(childLength / 2) + 0.5);
+      } else {
+        angle = angleStep * (index - Math.floor(childLength / 2));
+      }
+    }
+
+    const childX = x + radius * Math.cos(angle);
+    const childY = y + radius * Math.sin(angle);
+
+    return [childX, childY];
+  };
+
   return (
     <group>
       <Topic
-        topic={node.topic}
-        handleEditMode={handleEditMode}
-        handlenewMode={handlenewMode}
-        key={node.topic.id}
-        root={node.topic.type === "ROOT"}
-        position={[centerX, centerY, 0]}
-        onTopicClick={handleSelect}
+        ref={topicRefs.current[topic.id]}
+        key={topic.id}
+        topic={topic}
+        position={[x, y, 0]}
+        neighbourRefs={neighbours}
+        onTopicActive={handleTopicActive}
+        handleTopicCreate={handleTopicCreate}
       />
 
-      {node.children.map((child, index) => {
-        const angle = angleStep * index;
-        const x = centerX + radius * Math.cos(angle);
-        const y = centerY + radius * Math.sin(angle);
+      {topic.childIds.map((childId, index) => {
+        const childTopic = nodes.find((node) => node.id === childId);
+
+        const [childX, childY] = calculatePosition(
+          index,
+          topic.childIds.length
+        );
 
         return (
-          <group>
-            <Connection
-              from={[x, y, 0]}
-              to={[centerX, centerY, 0]}
-              weight={0.5}
-              color="white"
-              opacity={50}
-            />
-            <Tree
-              handleSelect={handleSelect}
-              handlenewMode={handlenewMode}
-              handleEditMode={handleEditMode}
-              node={child}
-              key={child.topic.id}
-              radius={radius}
-              angleStep={angleStep}
-              centerX={x}
-              centerY={y}
-            />
-          </group>
+          <Tree
+            key={childId}
+            topicRefs={topicRefs}
+            handleTopicActive={handleTopicActive}
+            handleTopicCreate={handleTopicCreate}
+            topic={childTopic!}
+            x={childX}
+            y={childY}
+            nodes={nodes}
+            depth={depth + 1}
+          />
         );
       })}
     </group>

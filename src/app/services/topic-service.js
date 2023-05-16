@@ -10,14 +10,16 @@ function getAuthHeader() {
 }
 
 // function that the component will subscribe to to get the data
-export function getTopicTree(rootTopicId) {
+export function getSubjectTopics(subjectId) {
   return new Observable((observer) => {
-    const source = new EventSource(`${BASE_URL}/tree/${rootTopicId}`, {
+    const source = new EventSource(`${BASE_URL}/tree/${subjectId}`, {
       headers: getAuthHeader(),
     });
+
     source.onmessage = (event) => {
       observer.next(JSON.parse(event.data));
     };
+
     source.onerror = (event) => {
       if (event.eventPhase === EventSource.CLOSED) {
         observer.complete();
@@ -25,6 +27,7 @@ export function getTopicTree(rootTopicId) {
         observer.error("Request failed");
       }
     };
+
     return () => {
       source.close();
     };
@@ -37,6 +40,21 @@ export function postTopicTree(rootTopicId, data) {
     headers: {
       "Content-Type": "application/json",
     },
+    body: `${JSON.stringify(data)}`,
+  }).then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error("Request failed");
+  });
+}
+
+export function putTopic(topicId, data) {
+  return fetch(`${BASE_URL}/${topicId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   }).then((response) => {
     if (response.ok) {
@@ -45,3 +63,23 @@ export function postTopicTree(rootTopicId, data) {
     throw new Error("Request failed");
   });
 }
+
+export function postTopic(subjectId, parentId, topicName) {
+  return fetch(`${BASE_URL}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      subjectId,
+      parentId,
+      topicName
+    }),
+  }).then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error("Request failed");
+  });
+}
+
