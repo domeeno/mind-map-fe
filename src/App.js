@@ -8,7 +8,9 @@ import "./styles";
 
 const App = () => {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="grid h-screen" style={{
+      gridTemplateRows: "4.5rem auto 6rem"
+    }}>
       <Router>
         <KeycloakProvider>
           <Header />

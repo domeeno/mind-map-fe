@@ -6,7 +6,7 @@ import CanvasSidebar from "../../components/sidebar/CanvasSidebar";
 import { CanvasEvents } from "../../interface/interface";
 import { SubjectDTO } from "../../generated/NetworkApi";
 
-const getTemplateColumns = (size) => `${size}rem calc(100% - ${size}rem)`;
+const getTemplateColumns = (size) => `${size}rem calc(100vw - ${size}rem)`;
 
 const SubjectPage = () => {
   const { id } = useParams();
@@ -58,7 +58,7 @@ const SubjectPage = () => {
   const gridTemplateColumns = getTemplateColumns(collapsed ? 3 : 20);
 
   return (
-    <div className="grid h-full" style={{ gridTemplateColumns }}>
+    <div className="grid w-full flex-auto" style={{ gridTemplateColumns, minHeight: '25rem' }}>
       {/* side panel */}
       <CanvasSidebar
         toggleCollapse={toggleCollapse}
