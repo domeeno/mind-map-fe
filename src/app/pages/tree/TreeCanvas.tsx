@@ -84,7 +84,7 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({
   } 
 
   return (
-    <div className="flex h-full w-full relative">
+    <div className="h-full w-full relative" style={{minHeight: '100%'}}>
       <Canvas style={{zIndex: 0}}>
         <pointLight color="indianred" />
         <pointLight position={[10, 10, -10]} color="orange" />

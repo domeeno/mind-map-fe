@@ -12,14 +12,14 @@ const CanvasSidebar = ({
   return (
     <>
       {!collapsed ? (
-        <div className="flex-shrink-0 flex-col max-w-xs w-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden p-6 transition-all duration-300">
-          <button className="p-4" onClick={toggleCollapse}>
+        <div className="flex-shrink-0 max-w-xs w-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden p-6 transition-all duration-300 flex flex-col">
+          <button className="p-4 flex-initial" onClick={toggleCollapse}>
             <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
               <path d="M12 8l-4 4 4 4v-3h8v-2h-8V8z" />
             </svg>
           </button>
 
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-shrink-0 flex-initial">
             <button className="py-3" onClick={goBack}>
               {"< "}Back
             </button>
@@ -35,7 +35,7 @@ const CanvasSidebar = ({
               <p className="text-gray-400">{subject.description}</p>
             </div>
           </div>
-          <div className="flex flex-wrap mt-2">
+          <div className="flex flex-wrap mt-2 flex-auto min-h-0 overflow-y-auto content-start">
             {tagList.map((tag, index) => (
               <button
                 type="button"
